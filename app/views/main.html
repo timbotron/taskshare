@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>TaskShare</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico"/>
+
+        <!-- Le styles -->
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap.tweaks.css" />
+        <!-- <script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script> -->
+        <script type="text/javascript" src="/minify/js?files=jquery-2.0.3.min.js,bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/main.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+
+                <div class="navbar">
+                <div class="navbar-inner">
+                <div class="container">
+                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </a>
+                <a class="brand" href="#">Taskshare.org/b/<?php echo $board_code;?></a>
+                <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+                </ul>
+                </div>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="offset1 span10">
+                <ul class="thumbnails">
+                <?php foreach($task_array as $tasklist):?>
+                    <li class="span5">
+                    <div class="thumbnail">
+                    <h3><span class="list_title" id="list_<?php echo $tasklist['listid'];?>"><?php echo $tasklist['listname']; //TODO bootstrap popover! ?></span></h3>
+
+                    <table class="table table-condensed"><tbody>
+                        <?php foreach($tasklist['listitem'] as $list):?>
+                            <tr>                            
+                                <td class="check_td"><button class="btn btn-small btn-success" value="hiddenmaybe"><i class="icon-check icon-white"></i></button></td>
+                                <td class="taskname"><?php echo $list['taskname'];?></td>
+                            </tr>
+                        <?php endforeach;?>
+                    </tbody></table>
+                    </div>
+                    </li>
+                <?php endforeach;?>
+                </ul>
+
+                <div id="templates">
+
+                    <div id="popover_template">
+                        <div class="btn-group" id="replace_me">
+                            <button class="btn view_addtask"><i class="icon-plus"></i></button>
+                            <button class="btn edit_listname"><i class="icon-pencil"></i></button>
+                            <button class="btn delete_listname"><i class="icon-trash"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
+                </div>
+
+                </div>
+
+
+    
+
+        </div> <!-- /container -->
+
+    </body>
+</html>

@@ -1,0 +1,14 @@
+.taskname, .list_title
+{
+	cursor:pointer;
+}
+
+.check_td
+{
+	width:40px;
+}
+
+#templates
+{
+	display: none;
+}

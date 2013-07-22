@@ -1,0 +1,1003 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"json",
+				"json_data"
+			],
+			[
+				"list",
+				"list_id"
+			],
+			[
+				"save_taskl",
+				"save_tasklist_edit"
+			],
+			[
+				"board",
+				"board_array"
+			],
+			[
+				"js",
+				"json_array"
+			],
+			[
+				"ut",
+				"utf8_encode"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"sa",
+				"save_data"
+			],
+			[
+				"candida",
+				"candidate_id"
+			],
+			[
+				"candidate",
+				"candidate_images"
+			],
+			[
+				"inter",
+				"internal_note"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"uns",
+				"unset"
+			],
+			[
+				"int",
+				"internal_notes"
+			],
+			[
+				"all",
+				"all_corrs"
+			],
+			[
+				"look",
+				"lookup_all_corr"
+			],
+			[
+				"co",
+				"correspondent"
+			],
+			[
+				"array_p",
+				"array_push"
+			],
+			[
+				"isn",
+				"is_numeric"
+			],
+			[
+				"dd",
+				"dd_all_corr"
+			],
+			[
+				"is_",
+				"is_array"
+			],
+			[
+				"str",
+				"strtolower"
+			],
+			[
+				"result",
+				"result_array"
+			],
+			[
+				"csdirect",
+				"csdirect_note"
+			],
+			[
+				"leve",
+				"level3_options"
+			],
+			[
+				"level",
+				"level2_options"
+			],
+			[
+				"level1",
+				"level1_options"
+			],
+			[
+				"alt",
+				"alternate_queue"
+			],
+			[
+				"alter",
+				"alternate_queue_name"
+			],
+			[
+				"csd",
+				"csdirect_note"
+			],
+			[
+				"get_le",
+				"get_levels_from_ki"
+			],
+			[
+				"is",
+				"is_valid"
+			],
+			[
+				"cont",
+				"contact_array"
+			],
+			[
+				"pos",
+				"post_data"
+			],
+			[
+				"site",
+				"sitecode"
+			],
+			[
+				"file",
+				"file_string"
+			],
+			[
+				"parse",
+				"parsed_comment"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"users",
+				"users_sitecode"
+			],
+			[
+				"n",
+				"nl2br"
+			],
+			[
+				"strto",
+				"strtoupper"
+			],
+			[
+				"tick",
+				"ticket_num"
+			],
+			[
+				"ticket",
+				"ticket_num"
+			],
+			[
+				"ret",
+				"returned_data"
+			],
+			[
+				"new",
+				"new_tik_num"
+			],
+			[
+				"head",
+				"header_prefix2"
+			],
+			[
+				"sys",
+				"syschange_id"
+			],
+			[
+				"get_l",
+				"get_levels_from_syschange"
+			],
+			[
+				"header",
+				"header_prefix"
+			],
+			[
+				"json_",
+				"json_array"
+			],
+			[
+				"catego",
+				"category_id"
+			],
+			[
+				"array",
+				"json_array"
+			],
+			[
+				"base",
+				"base64_encode"
+			],
+			[
+				"desc",
+				"desc"
+			],
+			[
+				"post",
+				"post_me"
+			],
+			[
+				"jso",
+				"json_array"
+			],
+			[
+				"ass",
+				"associatedDefectId"
+			],
+			[
+				"status",
+				"status"
+			],
+			[
+				"org",
+				"org"
+			],
+			[
+				"get_tick",
+				"get_ticket"
+			],
+			[
+				"curl_e",
+				"curl_error"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"test",
+				"test_chosen"
+			],
+			[
+				"award",
+				"award_blurbs"
+			],
+			[
+				"awa",
+				"award_blurbs"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.orig.php",
+			"settings":
+			{
+				"buffer_size": 1132,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.php",
+			"settings":
+			{
+				"buffer_size": 844,
+				"line_ending": "Unix",
+				"name": "index.php"
+			}
+		},
+		{
+			"file": "app/views/home.html",
+			"settings":
+			{
+				"buffer_size": 3124,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/board.php",
+			"settings":
+			{
+				"buffer_size": 4846,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/main.html",
+			"settings":
+			{
+				"buffer_size": 4103,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/main.js",
+			"settings":
+			{
+				"buffer_size": 2266,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/bootstrap.tweaks.css",
+			"settings":
+			{
+				"buffer_size": 103,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/test.html",
+			"settings":
+			{
+				"buffer_size": 412,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/config/routes.ini",
+			"settings":
+			{
+				"buffer_size": 9,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/config/maps.ini",
+			"settings":
+			{
+				"buffer_size": 6,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/config/globals.ini",
+			"settings":
+			{
+				"buffer_size": 171,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/web.php",
+			"settings":
+			{
+				"buffer_size": 22068,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/timotheus/work/personal/taskshare/www/lib/base.php",
+		"/Users/timotheus/work/personal/taskshare/www/.gitignore",
+		"/Users/timotheus/work/personal/taskshare/www/taskshare.sublime-project",
+		"/Users/timotheus/work/personal/taskshare/www/taskshare.sublime-workspace",
+		"/Users/timotheus/work/personal/taskshare/www/routes.ini",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/user.php",
+		"/Users/timotheus/work/canary/dreanie/www/_ui/css/bootstrap.tweaks.css",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/property_edit.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/config/constants.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/category.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/signup/owner_apply_success.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/signup/owner_apply_fail.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/signup/owner_apply_sideblurb.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/new_account.php",
+		"/Users/timotheus/work/canary/dreanie/www/_ui/js/owner.js",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/signup/owner_signyp_sideblurb.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/owner_signup_generic.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/owner_apply.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/owner_apply_header.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/generic.php",
+		"/Users/timotheus/work/canary/dreanie/www/_ui/js/contact.js",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/property.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/shell.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/sitemap.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/place.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/nav.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/owner_list.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/success.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/view_account.php",
+		"/Users/timotheus/work/canary/dreanie/www/_ui/js/staff_admin.js",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/staff_admin/candidate_yn.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/staff_admin.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/guide.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/config/routes.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/guides.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/page.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/mockup.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/config/tank_auth.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/owners.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/mockup/dadmin_mock_owners.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/mockup/dadmin_new_owner.php",
+		"/Users/timotheus/work/canary/dreanie/www/_ui/css/bootstrap.min.css",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/news.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/news_item.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/guides.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/guide.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/libraries/Csv.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/libraries/View.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/shell.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/core/APP_Controller.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/views/dadmin_mock.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/models/style.php",
+		"/Users/timotheus/work/canary/dreanie/www/application/controllers/styles.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/classes/MCServer.php",
+		"/Users/timotheus/work/canary/virtualmachine/ddd/ddd.sublime-project",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/new_ticket.php",
+		"/Users/timotheus/work/canary/virtualmachine/nolawork/index.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/view_ticket.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/index.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/close_ticket.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/js/contact/contact_dropdown.js",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/scheduling/maintenance_update.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/scheduling/ref.maintenance_update.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/scheduling/cpro_maintenance_update.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/scheduling/sierra_maintenance_update.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/classes/ref.TicketRules.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/release/known_issues_call.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/servcomm_form.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.calls2excel.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/calls2excel.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_suppresslocation.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_suppressscope.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_updateLNA.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_configureMatTypeIcon.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_hosted_upgraderequest.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_suppressfacet.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/functions/jpf_slx_magic.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/functions/jpf_magic.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/js/jpf_magic.js",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/source_manager_form.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.new_ticket.php",
+		"/Users/timotheus/Downloads/transactions-20121206-0605244.iif",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/includes/header.slx.php",
+		"/Users/timotheus/work/iii/csdirect_slx/slx.apitest.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/encore_harvesting_info.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/forms/harvesting_info.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.slxindex.ss.html",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.slxindex.html",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.index.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/classes/ref.GenericForm.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/build_prodlevels.php",
+		"/Applications/SimCity 2000.app/Contents/Resources/Configurations/386 speed.conf",
+		"/Applications/SimCity 2000.app/Contents/Resources/Configurations/486 speed.conf",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ViewClosedTickets.php",
+		"/Users/timotheus/work/iii/csdirect_slx/upload/index.php",
+		"/Users/timotheus/work/iii/csdirect_slx/orig.html",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/ref.view_ticket.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/view_ticket.ref.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/includes/header.php",
+		"/Users/timotheus/Library/Application Support/Sublime Text 2/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/timotheus/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/timotheus/work/iii/csdirect_slx/new.html",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/support/slx_servcomm_form.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/classes/Category.php",
+		"/Users/timotheus/work/iii/csdirect_slx/repo/common/includes/SupportSqlPhrases.xml",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/tools/sierraheat/application/controllers/reports.php",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/tools/sierraheat/application/views/report_index.php",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/tools/sierraheat/application/models/dbmojo.php",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/hr/vote.shtml",
+		"/Users/timotheus/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/csd/documentation/formtest.shtml",
+		"/Users/timotheus/mounts/webserv1/innhouse.htdocs/csd/documentation/service_request.shtml"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"span4",
+			"  ",
+			"//$",
+			"View",
+			"get_prepped_users",
+			"block-level'",
+			"PasswordHash",
+			"crypt",
+			"FIND_IN_SET",
+			"ip_address",
+			"session",
+			"ip",
+			"parse_csv",
+			"font:",
+			"font-face",
+			"Gotham",
+			"  ",
+			"</p>",
+			"$json_array['status']=\"Open\";",
+			"header",
+			"$site",
+			"maint",
+			"* ",
+			"x ",
+			"OpenTi",
+			"level1",
+			"Contact Information",
+			"requester",
+			"contact",
+			"Commit",
+			"$catRes",
+			"fusermount -u",
+			" -o idmap=user -o uid=1000 -o gid=1000",
+			"other",
+			"/home/tim/"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"    ",
+			"block-level\"'",
+			"    ",
+			"\\n\\n",
+			"# ",
+			"* http://csdirect-test.iii.com/",
+			"* ",
+			"umount",
+			"",
+			"hith",
+			"/Users/timotheus/"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 5,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.orig.php",
+					"settings":
+					{
+						"buffer_size": 1132,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								971,
+								1016
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 328.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.php",
+					"settings":
+					{
+						"buffer_size": 844,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								593,
+								593
+							]
+						],
+						"settings":
+						{
+							"auto_name": "index.php",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/views/home.html",
+					"settings":
+					{
+						"buffer_size": 3124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3124,
+								3124
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 930.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/models/board.php",
+					"settings":
+					{
+						"buffer_size": 4846,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4147,
+								4147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1184.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/views/main.html",
+					"settings":
+					{
+						"buffer_size": 4103,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3019,
+								3019
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 307.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/main.js",
+					"settings":
+					{
+						"buffer_size": 2266,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2193,
+								2193
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 531.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "css/bootstrap.tweaks.css",
+					"settings":
+					{
+						"buffer_size": 103,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								83,
+								83
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/views/test.html",
+					"settings":
+					{
+						"buffer_size": 412,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								412,
+								412
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/config/routes.ini",
+					"settings":
+					{
+						"buffer_size": 9,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9,
+								9
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/config/maps.ini",
+					"settings":
+					{
+						"buffer_size": 6,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6,
+								6
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "app/config/globals.ini",
+					"settings":
+					{
+						"buffer_size": 171,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								171,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "lib/web.php",
+					"settings":
+					{
+						"buffer_size": 22068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13495,
+								13501
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 30.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"drea",
+				"/Users/timotheus/work/canary/dreanie/www/dreanie.sublime-project"
+			],
+			[
+				"fre",
+				"/Users/timotheus/work/canary/fretbuzz/www/fretbuzz.sublime-project"
+			],
+			[
+				"dre",
+				"/Users/timotheus/work/canary/dreanie/www/dreanie.sublime-project"
+			],
+			[
+				"dr",
+				"/Users/timotheus/work/canary/dreanie/www/dreanie.sublime-project"
+			],
+			[
+				"ni",
+				"/Users/timotheus/work/personal/nikl/Nickelpinch/www/nikl.sublime-project"
+			],
+			[
+				"ka",
+				"/Users/timotheus/work/canary/witry/www/katie-witry.sublime-project"
+			],
+			[
+				"wit",
+				"/Users/timotheus/work/canary/witry/www/katie-witry.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 227.0,
+	"status_bar_visible": true
+}

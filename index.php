@@ -22,6 +22,8 @@ $f3->route('GET /test',
 
 $f3->route('GET /new','Board->post');
 
+$f3->map('/tasklist/@tasklistid/@boardcode','Board');
+
 $f3->route('GET /b/@boardcode','Board->loadboard');
 
 $f3->route('GET /minify/@type',

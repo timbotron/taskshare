@@ -89,7 +89,38 @@ class Board {
     	else $this->f3->reroute('/error/1000'); //TODO make an error handler page.
     	//var_dump($this->db);
     }
-    function put() {}
+    function put() 
+    {
+        // First verify this tasklist matches the boardnumber
+        
+        $sql = "SELECT tasklists.id
+                FROM tasklists
+                INNER JOIN boards ON boards.id=tasklists.boardid
+                WHERE tasklists.id=:id AND boards.name=:bname";
+
+        $params = array(
+                        ':id'=>$this->f3->get('PARAMS.tasklistid'),
+                        ':bname'=>$this->f3->get('PARAMS.boardcode'));
+        $rows = $this->db->exec($sql,$params);
+        
+        if(count($rows)>0)
+        {
+            //Let's update the db!
+            $json_data =  json_decode($this->f3->get('BODY'),true);
+            $sql = "UPDATE tasklists SET listname=:listname WHERE id=:id";
+            $params = array(':listname'=>$json_data['listname'],':id'=>$this->f3->get('PARAMS.tasklistid'));
+            $rows = $this->db->exec($sql,$params);
+            if($rows>0) header("HTTP/1.0 200 OK");
+            else header("HTTP/1.0 402 Request Failed");            
+        }
+        else
+        {
+            header("HTTP/1.0 400 Bad Request");
+        }
+        
+        
+        //echo $this->f3->get('PARAMS.boardcode');
+    }
     function delete() {}
     function loadboard()
     {

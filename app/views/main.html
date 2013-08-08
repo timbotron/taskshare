@@ -32,8 +32,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </a>
-                <form class="navbar-form pull-left">
-                <button class="btn btn-success add-list"><i class="icon-plus icon-white"></i> New Tasklist</button>
+                <form class="navbar-form pull-left add-list-wrapper" >
+                <button type="button" class="btn btn-success add-list"><i class="icon-plus icon-white"></i> New Tasklist</button>
                 </form>
                 <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
@@ -54,10 +54,10 @@
                     <div class="thumbnail">
                     <h3><span class="list_title" id="list_<?php echo $tasklist['listid'];?>"><?php echo $tasklist['listname']; ?></span><span class="list_<?php echo $tasklist['listid'];?>"></span></h3>
 
-                    <table class="table table-condensed"><tbody>
+                    <table class="table table-condensed list_<?php echo $tasklist['listid'];?>"><tbody>
                         <?php foreach($tasklist['listitem'] as $list):?>
                             <tr>                            
-                                <td class="check_td"><button class="btn btn-small btn-success" value="hiddenmaybe"><i class="icon-ok icon-white"></i></button></td>
+                                <td class="check_td"><button class="btn btn-small btn-success done_task" value="task-<?php echo $list['taskid'];?>"><i class="icon-ok icon-white"></i></button></td>
                                 <td class="taskname"><?php echo $list['taskname'];?></td>
                             </tr>
                         <?php endforeach;?>
@@ -72,7 +72,7 @@
                     <div id="popover_template">
                         <span class="replace_me"></span>
                         <div class="btn-group">
-                            <button class="btn view_addtask"><i class="icon-plus"></i></button>
+                            <button class="btn add_task"><i class="icon-plus"></i></button>
                             <button class="btn edit_listname"><i class="icon-pencil"></i></button>
                             <button class="btn delete_listname"><i class="icon-trash"></i></button>
                         </div>
@@ -85,6 +85,17 @@
                             <button class="btn btn-success save_tasklist" type="button">Done</button>
                         </div>
                     </div>
+
+                    <div id="task_add_template">
+                        <br />
+                        <span class="replace_me"></span>
+                        <div class="input-append">
+                            <input class="input-large add-task-replace_me" type="text">
+                            <button class="btn btn-success save_task" type="button">Add</button>
+                            <button class="btn btn-success done_adding_task" type="button">Done Adding</button>
+                        </div>
+                    </div>
+
 
                 </div>
 

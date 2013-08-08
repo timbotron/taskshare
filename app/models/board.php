@@ -19,7 +19,7 @@ class Board {
                         INNER JOIN tasklists ON tasklists.boardid=boards.id
                         LEFT JOIN tasks ON tasks.tasklistid=tasklists.id
                         WHERE boards.name=?
-                        ORDER BY listid ASC,taskid ASC";
+                        ORDER BY listid ASC,taskid DESC";
         $results = $this->db->exec($sql,$this->f3->get('PARAMS.boardcode'));
 
         $json_array = array();
@@ -69,7 +69,8 @@ class Board {
         else echo utf8_encode(json_encode($json_array));
         
     }
-    function post()
+
+    function new_board()
     {
     	if(isset($_POST['board_name'])) $new_name = $_POST['board_name']; // for future, when users can create a specifically-named board
     	else $new_name = bin2hex(openssl_random_pseudo_bytes(4)); 
@@ -89,6 +90,30 @@ class Board {
     	else $this->f3->reroute('/error/1000'); //TODO make an error handler page.
     	//var_dump($this->db);
     }
+
+    function post()
+    {
+        $rows = $this->db->exec("SELECT id FROM boards WHERE name=?",$this->f3->get('PARAMS.boardcode'));
+
+        $boardid=$rows[0]['id'];
+
+        if(count($rows)==0)
+        {
+            // there wasn't a board
+            // TODO error this
+        }
+        $rows = $this->db->exec("INSERT INTO tasklists (boardid, listname) VALUES (?,'New List')",$boardid);
+
+        if($rows>0)
+            {
+                $id = $this->db->lastInsertId();
+                $json_data = array('id'=>$id);
+                header("HTTP/1.0 200 OK");
+                echo utf8_encode(json_encode($json_data));
+            }
+
+    }
+
     function put() 
     {
         // First verify this tasklist matches the boardnumber
@@ -117,11 +142,47 @@ class Board {
         {
             header("HTTP/1.0 400 Bad Request");
         }
-        
-        
-        //echo $this->f3->get('PARAMS.boardcode');
     }
-    function delete() {}
+
+    function delete()
+    {
+        $sql = "SELECT tasklists.id
+                FROM tasklists
+                INNER JOIN boards ON boards.id=tasklists.boardid
+                WHERE tasklists.id=:id AND boards.name=:bname";
+
+        $params = array(
+                        ':id'=>$this->f3->get('PARAMS.tasklistid'),
+                        ':bname'=>$this->f3->get('PARAMS.boardcode'));
+        $rows = $this->db->exec($sql,$params);
+        
+        if(count($rows)>0)
+        {
+            //Let's update the db!
+            $json_data =  json_decode($this->f3->get('BODY'),true);
+            
+            $this->db->begin();
+
+            $sql = "DELETE FROM tasks WHERE tasklistid=:id";
+            $params = array(':id'=>$this->f3->get('PARAMS.tasklistid'));
+            $taskrows = $this->db->exec($sql,$params);
+
+            $sql = "DELETE FROM tasklists WHERE id=:id";
+            $params = array(':id'=>$this->f3->get('PARAMS.tasklistid'));
+            $rows = $this->db->exec($sql,$params);
+
+            $this->db->commit();
+
+            
+            if($rows>0) header("HTTP/1.0 200 OK");
+            else header("HTTP/1.0 402 Request Failed");            
+        }
+        else
+        {
+            header("HTTP/1.0 400 Bad Request");
+        }
+    }
+
     function loadboard()
     {
         $this->f3->set('internal',true);

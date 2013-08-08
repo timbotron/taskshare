@@ -20,9 +20,10 @@ $f3->route('GET /test',
     }
 );
 
-$f3->route('GET /new','Board->post');
+$f3->route('GET /new','Board->new_board');
 
 $f3->map('/tasklist/@tasklistid/@boardcode','Board');
+$f3->map('/task/@tasklistid/@boardcode','Task');
 
 $f3->route('GET /b/@boardcode','Board->loadboard');
 

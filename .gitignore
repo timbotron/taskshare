@@ -1,2 +1,3 @@
 .DS_Store
-taskshare.sublime-workspace
+*.sublime-workspace
+*.sublime-project

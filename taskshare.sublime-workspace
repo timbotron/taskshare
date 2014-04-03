@@ -535,7 +535,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 			""
@@ -611,7 +611,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -710,8 +710,8 @@
 						"selection":
 						[
 							[
-								5712,
-								5712
+								5136,
+								5136
 							]
 						],
 						"settings":
@@ -721,7 +721,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1526.0,
+						"translation.y": 1648.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -794,8 +794,8 @@
 						"selection":
 						[
 							[
-								1219,
-								1470
+								612,
+								612
 							]
 						],
 						"settings":
@@ -804,7 +804,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 468.0,
+						"translation.y": 1064.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

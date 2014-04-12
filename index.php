@@ -14,6 +14,12 @@ $f3->route('GET /',
     }
 );
 
+$f3->route('GET /about',
+    function() {
+        echo View::instance()->render('about.html');
+    }
+);
+
 $f3->route('GET /test',
     function() {
         echo View::instance()->render('test.html');

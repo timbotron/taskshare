@@ -73,13 +73,13 @@ class Board {
     function new_board()
     {
     	if(isset($_POST['board_name'])) $new_name = $_POST['board_name']; // for future, when users can create a specifically-named board
-    	else $new_name = bin2hex(openssl_random_pseudo_bytes(4)); 
+    	else $new_name = bin2hex(openssl_random_pseudo_bytes(10)); 
 
     	$rows = $this->db->exec("SELECT id FROM boards WHERE name=?",$new_name);
 
     	while (count($rows) != 0) // loops until it generates a name that isn't in use
     	{
-    		$new_name = bin2hex(openssl_random_pseudo_bytes(4)); 
+    		$new_name = bin2hex(openssl_random_pseudo_bytes(10)); 
     		$rows = $this->db->exec("SELECT id FROM boards WHERE name=?",$new_name);
     	}
 

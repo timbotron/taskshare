@@ -1,6 +1,6 @@
 <?php
 
-$f3=require('lib/base.php');
+$f3=require('vendor/bcosca/fatfree/lib/base.php');
 
 $f3->config('app/config/globals.ini');
 $f3->config('app/config/routes.ini');

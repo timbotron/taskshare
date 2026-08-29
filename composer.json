@@ -1,5 +1,11 @@
 {
     "require": {
-        "bcosca/fatfree": ">=3.2"
+        "aaronholbrook/autoload": "^1.2",
+        "nikic/fast-route": "^1.3",
+        "league/plates": "^3.5",
+        "michelf/php-markdown": "^2.0",
+        "verot/class.upload.php": "dev-master",
+        "vlucas/valitron": "^1.4",
+        "catfan/medoo": "^2.1"
     }
 }

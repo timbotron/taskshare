@@ -1,0 +1,55 @@
+# Lightweight local/test stack for TaskShare: Caddy + php-fpm + MySQL.
+# Usage:
+#   cp app/config/_env.php.template app/config/_env.php   # DB_SERVER=db, DB_NAME/USER/PASS=taskshare
+#   docker compose run --rm composer                       # one-time: install vendor/
+#   docker compose up -d                                   # app on http://localhost:8080
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskshare
+      MYSQL_USER: taskshare
+      MYSQL_PASSWORD: taskshare
+    volumes:
+      - ./001-migration-start.sql:/docker-entrypoint-initdb.d/001-migration-start.sql:ro
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-utaskshare", "-ptaskshare"]
+      interval: 5s
+      retries: 12
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php.Dockerfile
+    working_dir: /srv
+    volumes:
+      - ./:/srv
+    # ensure the private session store is writable by the php-fpm (www-data) worker
+    command: sh -c "mkdir -p /srv/app/storage/sessions && chown -R www-data:www-data /srv/app/storage && exec php-fpm"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./:/srv
+    depends_on:
+      - php
+
+  # one-shot: `docker compose run --rm composer` to populate vendor/
+  composer:
+    image: composer:2
+    working_dir: /srv
+    volumes:
+      - ./:/srv
+    command: install --ignore-platform-reqs --no-interaction
+    profiles: ["setup"]
+
+volumes:
+  dbdata:

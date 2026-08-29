@@ -1,5 +1,13 @@
+/vendor
+/app/config/_env.php
+/bin/tailwindcss
+push_to_test.sh
+/www/file/*
+/www/rss.xml
+composer.phar
+composer.lock
 .DS_Store
+Thumbs.db
+.composer
 *.sublime-workspace
 *.sublime-project
-globals.ini
-vendor/

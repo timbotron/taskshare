@@ -33,6 +33,13 @@ $dispatcher = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $r)
     // Public board view — anyone with the link can view (no login required)
     $r->get('/b/{slug:[A-Za-z0-9]+}',['\Initium\Board','loadboard']);
 
+    // Board JSON API (list + task CRUD). Mutations authorized in the handlers.
+    $r->post('/b/{slug:[A-Za-z0-9]+}/lists',['\Initium\TaskList','create']);
+    $r->put('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}',['\Initium\TaskList','rename']);
+    $r->delete('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}',['\Initium\TaskList','delete']);
+    $r->post('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}/tasks',['\Initium\Task','create']);
+    $r->put('/b/{slug:[A-Za-z0-9]+}/tasks/{id:\d+}',['\Initium\Task','edit']);
+
 });
 
 

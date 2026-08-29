@@ -28,4 +28,8 @@
   .task-row.is-done {
     @apply text-gray-400 line-through;
   }
+
+  .menu-btn {
+    @apply rounded border border-gray-300 px-2 py-1 text-sm hover:bg-gray-50;
+  }
 }

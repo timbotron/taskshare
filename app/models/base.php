@@ -68,4 +68,46 @@ class Base {
         return $ret;
     }
 
+    // --- JSON API helpers ---
+
+    // Decode a JSON request body into an array (empty array if absent/invalid).
+    protected function json_input(): array {
+        $data = json_decode(file_get_contents('php://input'), true);
+        return is_array($data) ? $data : [];
+    }
+
+    // Send a JSON response and end the request.
+    protected function json($data, int $code = 200) {
+        http_response_code($code);
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        die;
+    }
+
+    protected function json_error(string $message, int $code) {
+        $this->json(['error' => $message], $code);
+    }
+
+    // Next `position` value for an ordered set. Medoo's max() returns '' (not
+    // null) for an empty aggregate, so treat both as "no rows yet" -> 0.
+    protected function next_position(string $table, array $where): int {
+        $max = $this->db->max($table, 'position', $where);
+        return ($max === null || $max === '') ? 0 : (int) $max + 1;
+    }
+
+    // Load a board by slug and authorize the caller to mutate it, or send a
+    // JSON error and die. Owner-only for now; CODE-86 opens specific actions to
+    // anonymous link-holders per board_permissions.
+    protected function board_for_write(string $slug): array {
+        $board = $this->db->get('boards', ['id', 'owner_id', 'slug'], ['slug' => $slug]);
+        if(!$board) {
+            $this->json_error('Board not found.', 404);
+        }
+        $viewer = Cred::userDetails();
+        if(!$viewer || $viewer['user_id'] != $board['owner_id']) {
+            $this->json_error('Not allowed.', 403);
+        }
+        return $board;
+    }
+
 }

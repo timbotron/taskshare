@@ -1,23 +1,21 @@
-<?php $this->layout('basic');?>
-<div class="grd-row-col-2-6--md">
-	
-</div>
-<div class="brdr--light-gray grd-row-col-2-6--md p1">
-<h3>Login</h3>
-
-<form action="/login" method="POST">
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" value="<?= $this->e($post_content['email'] ?? '') ?>" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <input type="submit" value="Login" class="btn btn--green">
-</form>
-
-        <div class="login-footer">
-            <a class="flt--left" href="<?= SITE_URL ?>password-forgot">Forgot Password</a>
-            <?php if(ALLOW_SIGNUPS): ?>
-                    <a class="flt--right" href="<?= SITE_URL ?>create-account">Create Account</a>
-
-            <?php endif; ?>
+<?php $this->layout('basic'); ?>
+<div class="list-card mx-auto max-w-md">
+    <h1 class="mb-4 text-xl font-semibold">Log in</h1>
+    <form action="/login" method="POST" class="space-y-3">
+        <div>
+            <label for="email" class="mb-1 block text-sm font-medium">Email</label>
+            <input class="field" type="email" id="email" name="email" value="<?= $this->e($post_content['email'] ?? '') ?>" required>
         </div>
+        <div>
+            <label for="password" class="mb-1 block text-sm font-medium">Password</label>
+            <input class="field" type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">Log in</button>
+    </form>
+    <div class="mt-4 flex justify-between text-sm">
+        <a class="text-accent hover:underline" href="<?= SITE_URL ?>password-forgot">Forgot password?</a>
+        <?php if(ALLOW_SIGNUPS): ?>
+            <a class="text-accent hover:underline" href="<?= SITE_URL ?>create-account">Create account</a>
+        <?php endif; ?>
+    </div>
 </div>

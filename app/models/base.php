@@ -38,6 +38,15 @@ class Base {
         die;
     }
 
+    protected function require_login() {
+        // Gate for owner-only pages (dashboard, board settings). Bounces
+        // anonymous visitors to the login page.
+        if(!Cred::userDetails()) {
+            header('Location: ' . SITE_URL . 'login');
+            exit;
+        }
+    }
+
     protected function isUUID($uuid): bool {
         $regex = '/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/';
         return preg_match($regex, $uuid) === 1;

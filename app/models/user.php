@@ -100,12 +100,8 @@ class User extends Base {
 	}
 
 	public function logged_in_page() {
+		$this->require_login();
 		$user = Cred::userDetails();
-
-		if(!$user) {
-			header('Location: ' . SITE_URL);
-        exit; 
-		}
 
 		// just draw page
 		$this->templates->addData(['page_title' => SITE_NAME], ['basic']);

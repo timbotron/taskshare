@@ -4,17 +4,6 @@ namespace Initium;
 
 class User extends Base {
 
-	protected $templates;
-
-	public function __construct() {
-		parent::__construct();
-		$this->templates = new \League\Plates\Engine(__DIR__ . '/../templates');
-		$this->templates->addData(['is_logged_in' => Cred::userDetails() ? true : false], ['basic']);
-
-
-
-	}
-
 	protected function generate_uuid() {
 	    $uuid = random_bytes(16);
 
@@ -92,7 +81,7 @@ class User extends Base {
 		    return true;
 		}
 
-		header('Location: ' . SITE_URL . 'logged-in-page');
+		header('Location: ' . SITE_URL . 'dashboard');
         exit;
 
 

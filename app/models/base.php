@@ -6,13 +6,16 @@ class Base {
 
     protected $db;
     protected $messages;
+    protected $templates;
 
     public function __construct() {
         $this->db = DB::getInstance()->connect();
 
         $this->messages = [];
-        //var_dump("in base construct");
 
+        // Shared Plates engine + login state for every handler that renders.
+        $this->templates = new \League\Plates\Engine(__DIR__ . '/../templates');
+        $this->templates->addData(['is_logged_in' => Cred::userDetails() ? true : false], ['basic']);
     }
 
     protected function return_code(int $http_code) {

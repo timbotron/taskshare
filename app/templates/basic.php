@@ -12,7 +12,7 @@
             <a class="text-lg font-semibold" href="<?= SITE_URL ?>"><?= $this->e(SITE_NAME) ?></a>
             <div class="flex items-center gap-4">
                 <?php if($is_logged_in): ?>
-                    <a href="<?= SITE_URL ?>logged-in-page">Dashboard</a>
+                    <a href="<?= SITE_URL ?>dashboard">Dashboard</a>
                     <a href="<?= SITE_URL ?>logout">Logout</a>
                 <?php else: ?>
                     <a href="<?= SITE_URL ?>login">Login</a>

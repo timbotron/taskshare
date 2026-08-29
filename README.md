@@ -19,9 +19,16 @@ docker compose run --rm composer                       # one-time: install vendo
 docker compose up -d                                   # app on http://localhost:8080
 ```
 
-The `db` container auto-imports `001-migration-start.sql` (the Initium `users` table) on
-first boot. App tables (boards / lists / tasks / permissions) come in a follow-on migration
-(CODE-78). Document root is `www/`; everything above it (`app/`, `vendor/`) is not web-exposed.
+On first boot the `db` container auto-imports the migrations in order:
+`001-migration-start.sql` (the Initium `users` table) then `002-migration-taskshare.sql`
+(boards / lists / tasks / board_permissions + a `theme` column on `users`). To load demo data:
+
+```bash
+docker compose exec -T db mysql -utaskshare -ptaskshare taskshare < seed.sql   # demo@taskshare.test / password
+```
+
+Migrations only run on a fresh volume — `docker compose down -v` to re-init from scratch.
+Document root is `www/`; everything above it (`app/`, `vendor/`) is not web-exposed.
 
 ## CSS build (Tailwind standalone CLI)
 

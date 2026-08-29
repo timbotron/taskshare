@@ -13,6 +13,7 @@ services:
       MYSQL_PASSWORD: taskshare
     volumes:
       - ./001-migration-start.sql:/docker-entrypoint-initdb.d/001-migration-start.sql:ro
+      - ./002-migration-taskshare.sql:/docker-entrypoint-initdb.d/002-migration-taskshare.sql:ro
       - dbdata:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-utaskshare", "-ptaskshare"]

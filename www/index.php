@@ -30,6 +30,9 @@ $dispatcher = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $r)
     $r->post('/boards/{id:\d+}/rename',['\Initium\Board','rename']);
     $r->post('/boards/{id:\d+}/delete',['\Initium\Board','delete']);
 
+    // Public board view — anyone with the link can view (no login required)
+    $r->get('/b/{slug:[A-Za-z0-9]+}',['\Initium\Board','loadboard']);
+
 });
 
 

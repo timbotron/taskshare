@@ -16,4 +16,16 @@
   .field {
     @apply w-full rounded border border-gray-300 px-3 py-2 focus:border-accent focus:outline-none;
   }
+
+  .board-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .task-row {
+    @apply rounded px-2 py-1;
+  }
+
+  .task-row.is-done {
+    @apply text-gray-400 line-through;
+  }
 }

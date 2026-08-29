@@ -22,11 +22,15 @@
   }
 
   .task-row {
-    @apply rounded px-2 py-1;
+    @apply flex items-center justify-between gap-2 rounded px-2 py-1;
   }
 
-  .task-row.is-done {
+  .task-text.is-done {
     @apply text-gray-400 line-through;
+  }
+
+  .edit-btn {
+    @apply rounded px-1 text-sm text-gray-400 hover:text-gray-700;
   }
 
   .menu-btn {

@@ -32,6 +32,18 @@ class Task extends Base {
         $this->json(['id' => (int) $vars['id'], 'text' => $text]);
     }
 
+    // PUT /b/{slug}/tasks/{id}/complete — set (not toggle) the completed flag.
+    // The client sends the desired state, so it's idempotent and race-free.
+    public function complete($vars) {
+        $board = $this->board_for_write($vars['slug']);
+        $this->require_task_in_board($vars['id'], $board['id']);
+
+        $input = $this->json_input();
+        $completed = empty($input['completed']) ? 0 : 1;
+        $this->db->update('tasks', ['completed' => $completed], ['id' => $vars['id']]);
+        $this->json(['id' => (int) $vars['id'], 'completed' => $completed]);
+    }
+
     protected function require_task_in_board($task_id, $board_id) {
         $task = $this->db->get('tasks', ['id', 'list_id'], ['id' => $task_id]);
         if(!$task || !$this->db->has('lists', ['id' => $task['list_id'], 'board_id' => $board_id])) {

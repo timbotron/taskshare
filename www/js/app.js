@@ -82,13 +82,19 @@
       task._editing = false
     })
   }
+  // Set (not blindly toggle) the completed flag; click a struck task to un-strike.
+  function toggleComplete (task) {
+    var next = task.completed ? 0 : 1
+    api('PUT', base + '/tasks/' + task.id + '/complete', { completed: next }).then(function () {
+      task.completed = next
+    })
+  }
 
   function focusOnCreate (vnode) { vnode.dom.focus() }
 
   // --- components ---
   var TaskRow = {
     view: function (vnode) {
-      var list = vnode.attrs.list
       var task = vnode.attrs.task
       if (isOwner && task._editing) {
         return m('li', { class: 'task-row' }, [
@@ -102,10 +108,20 @@
           }),
         ])
       }
-      return m('li', {
-        class: 'task-row' + (task.completed ? ' is-done' : '') + (isOwner ? ' cursor-text' : ''),
-        onclick: isOwner ? function () { task._editing = true; task._editValue = task.text } : undefined,
-      }, task.text)
+      return m('li', { class: 'task-row' }, [
+        m('span', {
+          class: 'task-text flex-1' + (task.completed ? ' is-done' : '') + (isOwner ? ' cursor-pointer' : ''),
+          onclick: isOwner ? function () { toggleComplete(task) } : undefined,
+          title: isOwner ? 'Click to complete / un-complete' : undefined,
+        }, task.text),
+        isOwner
+          ? m('button', {
+              class: 'edit-btn',
+              title: 'Edit text',
+              onclick: function (e) { e.stopPropagation(); task._editing = true; task._editValue = task.text },
+            }, 'edit')
+          : null,
+      ])
     },
   }
 

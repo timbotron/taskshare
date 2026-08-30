@@ -23,6 +23,7 @@ $dispatcher = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $r)
     $r->post('/password-forgot',['\Initium\User','forgot_password']);
     $r->get('/password-reset/{pass_uuid}',['\Initium\User','reset_password_page']);
     $r->post('/password-reset/{pass_uuid}',['\Initium\User','reset_password']);
+    $r->post('/theme',['\Initium\User','save_theme']);
 
     // Boards dashboard (owner-only)
     $r->get('/dashboard',['\Initium\Board','dashboard']);

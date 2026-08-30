@@ -2,19 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* A few component classes kept out of the markup via @apply (CODE-77 scaffold).
-   The list card / task row / theme tokens get fleshed out in CODE-88. */
+/* Design tokens (CODE-88). Light is the default; dark = black + one pale-blue
+   accent (Tron). Driven by data-theme on the root, with OS prefers-color-scheme
+   as the fallback. Components below reference these vars, so there is one set of
+   rules and theming just flips the variables. */
+@layer base {
+  :root {
+    --bg: #f6f7f8;
+    --surface: #ffffff;
+    --fg: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #7fdbff;
+    --accent-fg: #0a0a0a;
+  }
+
+  :root[data-theme='dark'] {
+    --bg: #000000;
+    --surface: #0b0f14;
+    --fg: #d8e6ef;
+    --muted: #8393a3;
+    --border: #1b2733;
+    --accent: #7fdbff;
+    --accent-fg: #05070a;
+  }
+
+  /* Final fallback: honor the OS only when no explicit light choice is set. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --bg: #000000;
+      --surface: #0b0f14;
+      --fg: #d8e6ef;
+      --muted: #8393a3;
+      --border: #1b2733;
+      --accent: #7fdbff;
+      --accent-fg: #05070a;
+    }
+  }
+}
+
 @layer components {
   .btn {
-    @apply inline-block rounded px-4 py-2 font-medium bg-accent text-black transition hover:opacity-90;
+    @apply inline-block rounded px-4 py-2 font-medium bg-accent text-accent-fg transition hover:opacity-90;
   }
 
   .list-card {
-    @apply rounded-lg border border-gray-200 bg-white p-4 shadow-sm;
+    @apply rounded-lg border border-line bg-surface p-4 shadow-sm;
   }
 
   .field {
-    @apply w-full rounded border border-gray-300 px-3 py-2 focus:border-accent focus:outline-none;
+    @apply w-full rounded border border-line bg-surface px-3 py-2 text-fg focus:border-accent focus:outline-none;
   }
 
   .board-grid {
@@ -26,22 +63,22 @@
   }
 
   .task-text.is-done {
-    @apply text-gray-400 line-through;
+    @apply text-muted line-through;
   }
 
   .check-btn {
-    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded border border-gray-300 text-sm text-transparent hover:border-accent;
+    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded border border-line text-sm text-transparent hover:border-accent;
   }
 
   .check-btn.is-checked {
-    @apply border-accent bg-accent text-gray-900;
+    @apply border-accent bg-accent text-accent-fg;
   }
 
   .options-btn {
-    @apply rounded px-3 py-1 text-lg leading-none text-gray-400 hover:text-gray-700;
+    @apply rounded px-3 py-1 text-lg leading-none text-muted hover:text-fg;
   }
 
   .menu-btn {
-    @apply rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50;
+    @apply rounded border border-line px-3 py-1.5 text-sm text-fg hover:border-accent;
   }
 }

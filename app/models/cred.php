@@ -23,7 +23,7 @@ class Cred extends Base {
 		}
 
 		// password at least is sensical, lets look up user
-		$user = $this->db->get("users", ['id','email','password'], ['is_active' => 1, 'email'=> $email]);
+		$user = $this->db->get("users", ['id','email','password','theme'], ['is_active' => 1, 'email'=> $email]);
 
 		if($user && password_verify($password, $user['password'])) {
 			// login good. Record the login time on the row
@@ -35,6 +35,7 @@ class Cred extends Base {
 			$_SESSION['user_data'] = [
 				'user_id' => $user['id'],
 				'email' => $user['email'],
+				'theme' => $user['theme'] ?? 'light',
 			];
 
 			return true;

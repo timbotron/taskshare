@@ -1,7 +1,7 @@
 <?php $this->layout('basic'); ?>
 <div class="list-card mx-auto max-w-md">
     <h1 class="mb-2 text-xl font-semibold">Forgot password?</h1>
-    <p class="mb-4 text-sm text-gray-600">Enter your email. If it matches an account, we'll send a reset link.</p>
+    <p class="mb-4 text-sm text-muted">Enter your email. If it matches an account, we'll send a reset link.</p>
     <form action="/password-forgot" method="POST" class="space-y-3">
         <div>
             <label for="email" class="mb-1 block text-sm font-medium">Email</label>

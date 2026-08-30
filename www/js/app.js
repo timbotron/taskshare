@@ -1,6 +1,23 @@
 ;(function () {
   'use strict'
 
+  // --- Theme toggle (every page) ---
+  var themeBtn = document.getElementById('theme-toggle')
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var el = document.documentElement
+      var current = el.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      var next = current === 'dark' ? 'light' : 'dark'
+      el.setAttribute('data-theme', next)
+      if (el.getAttribute('data-auth')) {
+        m.request({ method: 'POST', url: '/theme', body: { theme: next } }) // logged-in: persist server-side
+      } else {
+        try { localStorage.setItem('ts-theme', next) } catch (e) {} // anonymous: localStorage
+      }
+    })
+  }
+
   // --- Home demo (CODE-77 scaffold): proves the no-build frontend is wired ---
   var demoRoot = document.getElementById('ts-demo')
   if (demoRoot) {
@@ -145,7 +162,7 @@
       // Edit mode (owner, entered from the list options): text becomes an input.
       var body = (canEditTask && list._ui.editing)
         ? m('input', {
-            class: 'w-full rounded border border-gray-300 px-2 py-1 text-sm',
+            class: 'w-full rounded border border-line bg-surface px-2 py-1 text-sm text-fg',
             value: task._editValue,
             oninput: function (e) { task._editValue = e.target.value },
             onkeyup: function (e) { if (e.key === 'Enter') saveTaskText(task) },
@@ -176,7 +193,7 @@
       if (canRenameList && list._ui.editingName) {
         return m('div', { class: 'mb-2 flex gap-1' }, [
           m('input', {
-            class: 'w-full rounded border border-gray-300 px-2 py-1 font-semibold',
+            class: 'w-full rounded border border-line bg-surface px-2 py-1 font-semibold text-fg',
             value: list._ui.nameValue,
             oncreate: focusOnCreate,
             oninput: function (e) { list._ui.nameValue = e.target.value },
@@ -226,7 +243,7 @@
           ? m('ul', { class: 'space-y-1' }, list.tasks.map(function (t) {
               return m(TaskRow, { key: t.id, list: list, task: t })
             }))
-          : m('p', { class: 'text-sm text-gray-400' }, 'No tasks yet.'),
+          : m('p', { class: 'text-sm text-muted' }, 'No tasks yet.'),
         canAddTask && list._ui.adding ? m(AddTask, { list: list }) : null,
       ])
     },
@@ -242,7 +259,7 @@
     view: function () {
       return m('div', { class: 'list-card mb-4 max-w-xl' }, [
         m('h2', { class: 'mb-1 font-semibold' }, 'Sharing permissions'),
-        m('p', { class: 'mb-2 text-sm text-gray-500' }, 'Anyone with the link can view. Choose what they can also do:'),
+        m('p', { class: 'mb-2 text-sm text-muted' }, 'Anyone with the link can view. Choose what they can also do:'),
         PERMISSION_LABELS.map(function (row) {
           return m('label', { class: 'flex items-center gap-2 py-1 text-sm' }, [
             m('input', {
@@ -273,7 +290,7 @@
           ? m('div', { class: 'board-grid' }, state.lists.map(function (list) {
               return m(ListCard, { key: list.id, list: list })
             }))
-          : m('p', { class: 'text-gray-500' }, canCreateList ? 'No lists yet. Add one to get started.' : 'This board has no lists yet.'),
+          : m('p', { class: 'text-muted' }, canCreateList ? 'No lists yet. Add one to get started.' : 'This board has no lists yet.'),
       ])
     },
   }

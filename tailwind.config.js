@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-// TaskShare styling layer (CODE-77 scaffold). Full token set + Tron dark theme land in CODE-88.
+// TaskShare styling layer. Semantic colors are CSS variables (see tailwind/input.css),
+// so a single set of component rules themes light/dark by flipping the variables.
 // Build with the standalone CLI (no JS build step): see README / `bin/tailwindcss`.
 module.exports = {
-  // Dark theme is driven by a `data-theme="dark"` attribute on the root (CODE-88),
-  // not the OS media query, so `dark:` variants key off that selector.
+  // Dark theme is driven by `data-theme="dark"` on the root; OS prefers-color-scheme
+  // is the fallback (handled in the base layer).
   darkMode: ['selector', '[data-theme="dark"]'],
   content: [
     './app/templates/**/*.php',
@@ -12,8 +13,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Single bright pale-blue accent (Tron). Expanded into tokens in CODE-88.
-        accent: '#7FDBFF',
+        accent: 'var(--accent)',
+        'accent-fg': 'var(--accent-fg)',
+        app: 'var(--bg)',
+        surface: 'var(--surface)',
+        fg: 'var(--fg)',
+        muted: 'var(--muted)',
+        line: 'var(--border)',
       },
     },
   },

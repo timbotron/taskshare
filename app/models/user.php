@@ -117,6 +117,18 @@ class User extends Base {
 
 	}
 
+	// POST /theme — persist a logged-in user's theme preference (JSON).
+	public function save_theme() {
+		if(!Cred::userDetails()) {
+			$this->json_error('Not allowed.', 403);
+		}
+		$input = $this->json_input();
+		$theme = ($input['theme'] ?? '') === 'dark' ? 'dark' : 'light';
+		$this->db->update('users', ['theme' => $theme], ['id' => Cred::userDetails()['user_id']]);
+		$_SESSION['user_data']['theme'] = $theme;
+		$this->json(['theme' => $theme]);
+	}
+
 	public function create_account_page() {
 		if(!ALLOW_SIGNUPS) {
 			$this->return_code(404);

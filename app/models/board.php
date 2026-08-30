@@ -142,7 +142,10 @@ class Board extends Base {
         // JSON_HEX_* keeps user-supplied task text from breaking out of the <script> tag
         $state_json = json_encode($state, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 
-        $this->templates->addData(['page_title' => $board['title'] . ' — ' . SITE_NAME], ['basic']);
+        // The board's default theme (for viewers with no saved choice) is the owner's.
+        $owner_theme = $this->db->get('users', 'theme', ['id' => $board['owner_id']]) ?: 'light';
+
+        $this->templates->addData(['page_title' => $board['title'] . ' — ' . SITE_NAME, 'owner_theme' => $owner_theme], ['basic']);
         $this->templates->addData(['board' => $board, 'is_owner' => $is_owner, 'state_json' => $state_json], ['board']);
         echo $this->templates->render('board');
     }

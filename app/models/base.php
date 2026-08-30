@@ -15,7 +15,11 @@ class Base {
 
         // Shared Plates engine + login state for every handler that renders.
         $this->templates = new \League\Plates\Engine(__DIR__ . '/../templates');
-        $this->templates->addData(['is_logged_in' => Cred::userDetails() ? true : false], ['basic']);
+        $viewer = Cred::userDetails();
+        $this->templates->addData([
+            'is_logged_in' => $viewer ? true : false,
+            'user_theme' => $viewer['theme'] ?? null,
+        ], ['basic']);
     }
 
     protected function return_code(int $http_code) {

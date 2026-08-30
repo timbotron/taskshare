@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 /* Design tokens (CODE-88). Light is the default; dark = black + one pale-blue
-   accent (Tron). Driven by data-theme on the root, with OS prefers-color-scheme
-   as the fallback. Components below reference these vars, so there is one set of
-   rules and theming just flips the variables. */
+   accent with blue-white text and squared (terminal/Tron) corners. Driven by
+   data-theme on the root, with OS prefers-color-scheme as the fallback. One set
+   of component rules references these vars, so theming just flips the values. */
 @layer base {
   :root {
     --bg: #f6f7f8;
@@ -15,16 +15,18 @@
     --border: #e5e7eb;
     --accent: #7fdbff;
     --accent-fg: #0a0a0a;
+    --radius: 0.375rem;
   }
 
   :root[data-theme='dark'] {
     --bg: #000000;
     --surface: #0b0f14;
-    --fg: #d8e6ef;
-    --muted: #8393a3;
-    --border: #1b2733;
+    --fg: #d6eef7;
+    --muted: #92b2be;
+    --border: #1e2f39;
     --accent: #7fdbff;
     --accent-fg: #05070a;
+    --radius: 0; /* squared corners for the Tron look */
   }
 
   /* Final fallback: honor the OS only when no explicit light choice is set. */
@@ -32,26 +34,30 @@
     :root:not([data-theme='light']) {
       --bg: #000000;
       --surface: #0b0f14;
-      --fg: #d8e6ef;
-      --muted: #8393a3;
-      --border: #1b2733;
+      --fg: #d6eef7;
+      --muted: #92b2be;
+      --border: #1e2f39;
       --accent: #7fdbff;
       --accent-fg: #05070a;
+      --radius: 0;
     }
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-block rounded px-4 py-2 font-medium bg-accent text-accent-fg transition hover:opacity-90;
+    @apply inline-block px-4 py-2 font-medium bg-accent text-accent-fg transition hover:opacity-90;
+    border-radius: var(--radius);
   }
 
   .list-card {
-    @apply rounded-lg border border-line bg-surface p-4 shadow-sm;
+    @apply border border-line bg-surface p-4 shadow-sm;
+    border-radius: var(--radius);
   }
 
   .field {
-    @apply w-full rounded border border-line bg-surface px-3 py-2 text-fg focus:border-accent focus:outline-none;
+    @apply w-full border border-line bg-surface px-3 py-2 text-fg placeholder:text-muted focus:border-accent focus:outline-none;
+    border-radius: var(--radius);
   }
 
   .board-grid {
@@ -59,7 +65,8 @@
   }
 
   .task-row {
-    @apply flex items-center gap-2 rounded px-2 py-1.5;
+    @apply flex items-center gap-2 px-2 py-1.5;
+    border-radius: var(--radius);
   }
 
   .task-text.is-done {
@@ -67,7 +74,8 @@
   }
 
   .check-btn {
-    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded border border-line text-sm text-transparent hover:border-accent;
+    @apply flex h-7 w-7 shrink-0 items-center justify-center border border-line text-sm text-transparent hover:border-accent;
+    border-radius: var(--radius);
   }
 
   .check-btn.is-checked {
@@ -75,10 +83,12 @@
   }
 
   .options-btn {
-    @apply rounded px-3 py-1 text-lg leading-none text-muted hover:text-fg;
+    @apply px-3 py-1 text-lg leading-none text-muted hover:text-fg;
+    border-radius: var(--radius);
   }
 
   .menu-btn {
-    @apply rounded border border-line px-3 py-1.5 text-sm text-fg hover:border-accent;
+    @apply border border-line px-3 py-1.5 text-sm text-fg hover:border-accent;
+    border-radius: var(--radius);
   }
 }

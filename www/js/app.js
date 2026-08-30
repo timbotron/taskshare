@@ -162,7 +162,7 @@
       // Edit mode (owner, entered from the list options): text becomes an input.
       var body = (canEditTask && list._ui.editing)
         ? m('input', {
-            class: 'w-full rounded border border-line bg-surface px-2 py-1 text-sm text-fg',
+            class: 'field text-sm',
             value: task._editValue,
             oninput: function (e) { task._editValue = e.target.value },
             onkeyup: function (e) { if (e.key === 'Enter') saveTaskText(task) },
@@ -193,7 +193,7 @@
       if (canRenameList && list._ui.editingName) {
         return m('div', { class: 'mb-2 flex gap-1' }, [
           m('input', {
-            class: 'w-full rounded border border-line bg-surface px-2 py-1 font-semibold text-fg',
+            class: 'field font-semibold',
             value: list._ui.nameValue,
             oncreate: focusOnCreate,
             oninput: function (e) { list._ui.nameValue = e.target.value },

@@ -22,15 +22,23 @@
   }
 
   .task-row {
-    @apply flex items-center justify-between gap-2 rounded px-2 py-1;
+    @apply flex items-center gap-2 rounded px-2 py-1;
   }
 
   .task-text.is-done {
     @apply text-gray-400 line-through;
   }
 
-  .edit-btn {
-    @apply rounded px-1 text-sm text-gray-400 hover:text-gray-700;
+  .check-btn {
+    @apply flex h-6 w-6 shrink-0 items-center justify-center rounded border border-gray-300 text-xs text-transparent hover:border-accent;
+  }
+
+  .check-btn.is-checked {
+    @apply border-accent bg-accent text-gray-900;
+  }
+
+  .options-btn {
+    @apply rounded px-2 text-gray-400 hover:text-gray-700;
   }
 
   .menu-btn {

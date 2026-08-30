@@ -27,8 +27,9 @@
 
   // Capability seams. CODE-86 widens these to (isOwner || permissions.allow_*).
   // Adding/editing tasks and renaming lists are owner-only (not shareable perms).
-  var canManage = isOwner     // new/rename/delete lists, add/edit tasks, list options
-  var canComplete = isOwner   // toggle a task's completed flag
+  var canManage = isOwner          // new/rename/delete lists, add/edit tasks, list options
+  var canComplete = isOwner        // toggle a task's completed flag
+  var canClearCompleted = isOwner  // delete a list's completed tasks
 
   state.lists.forEach(initListUi)
   function initListUi (list) {
@@ -72,6 +73,12 @@
     list._ui.editing = !list._ui.editing
     if (list._ui.editing) list.tasks.forEach(function (t) { t._editValue = t.text })
   }
+  function clearCompleted (list) {
+    if (!window.confirm('Clear all completed tasks from this list?')) return
+    api('DELETE', base + '/lists/' + list.id + '/completed').then(function () {
+      list.tasks = list.tasks.filter(function (t) { return !t.completed })
+    })
+  }
 
   // --- task actions ---
   function addTask (list) {
@@ -97,6 +104,11 @@
   }
 
   function focusOnCreate (vnode) { vnode.dom.focus() }
+
+  function hasCompleted (list) { return list.tasks.some(function (t) { return t.completed }) }
+  // The ▾ options control shows when there's anything to offer: owner management,
+  // or a permitted Clear completed once the list actually has struck tasks.
+  function canOpenOptions (list) { return canManage || (canClearCompleted && hasCompleted(list)) }
 
   // --- components ---
   var TaskRow = {
@@ -130,12 +142,19 @@
   var ListMenu = {
     view: function (vnode) {
       var list = vnode.attrs.list
-      return m('div', { class: 'mb-2 flex flex-wrap gap-1' }, [
-        m('button', { class: 'menu-btn', onclick: function () { list._ui.adding = true } }, 'Add task'),
-        m('button', { class: 'menu-btn', onclick: function () { list._ui.editingName = true; list._ui.nameValue = list.title } }, 'Edit name'),
-        m('button', { class: 'menu-btn', onclick: function () { toggleEditTasks(list) } }, list._ui.editing ? 'Done editing' : 'Edit tasks'),
-        m('button', { class: 'menu-btn text-red-700', onclick: function () { deleteList(list) } }, 'Delete list'),
-      ])
+      var items = []
+      if (canManage) {
+        items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.adding = true } }, 'Add task'))
+        items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.editingName = true; list._ui.nameValue = list.title } }, 'Edit name'))
+        items.push(m('button', { class: 'menu-btn', onclick: function () { toggleEditTasks(list) } }, list._ui.editing ? 'Done editing' : 'Edit tasks'))
+      }
+      if (canClearCompleted && hasCompleted(list)) {
+        items.push(m('button', { class: 'menu-btn', onclick: function () { clearCompleted(list) } }, 'Clear completed'))
+      }
+      if (canManage) {
+        items.push(m('button', { class: 'menu-btn text-red-700', onclick: function () { deleteList(list) } }, 'Delete list'))
+      }
+      return m('div', { class: 'mb-2 flex flex-wrap gap-1' }, items)
     },
   }
 
@@ -156,7 +175,7 @@
       }
       return m('div', { class: 'mb-2 flex items-center justify-between gap-2' }, [
         m('h3', { class: 'font-semibold' }, list.title),
-        canManage
+        canOpenOptions(list)
           ? m('button', {
               class: 'options-btn',
               title: 'List options',
@@ -190,7 +209,7 @@
       var list = vnode.attrs.list
       return m('div', { class: 'list-card' }, [
         m(ListHeader, { list: list }),
-        canManage && list._ui.menu ? m(ListMenu, { list: list }) : null,
+        canOpenOptions(list) && list._ui.menu ? m(ListMenu, { list: list }) : null,
         list.tasks.length
           ? m('ul', { class: 'space-y-1' }, list.tasks.map(function (t) {
               return m(TaskRow, { key: t.id, list: list, task: t })

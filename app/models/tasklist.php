@@ -35,6 +35,16 @@ class TaskList extends Base {
         $this->json(['ok' => true]);
     }
 
+    // DELETE /b/{slug}/lists/{id}/completed — remove the struck tasks from a list.
+    // This is the only place the completion flow actually deletes tasks.
+    public function clear_completed($vars) {
+        $board = $this->board_for_write($vars['slug']);
+        $this->require_list_in_board($vars['id'], $board['id']);
+
+        $stmt = $this->db->delete('tasks', ['list_id' => $vars['id'], 'completed' => 1]);
+        $this->json(['ok' => true, 'deleted' => $stmt ? $stmt->rowCount() : 0]);
+    }
+
     protected function require_list_in_board($list_id, $board_id) {
         if(!$this->db->has('lists', ['id' => $list_id, 'board_id' => $board_id])) {
             $this->json_error('List not found.', 404);

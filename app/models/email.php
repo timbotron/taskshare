@@ -23,6 +23,19 @@ class Email {
 	    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 	    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 	    curl_setopt($curl, CURLOPT_POSTFIELDS, $message);
-	    return curl_exec($curl);
+	    $response = curl_exec($curl);
+	    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+	    // Log the outcome so mail sends are visible in `docker compose logs php`.
+	    // curl_exec returns false on transport failure; the key is never logged.
+	    if($response === false) {
+	        error_log('Mailgun send to ' . $email . ' failed (curl): ' . curl_error($curl));
+	    }
+	    else {
+	        error_log('Mailgun send to ' . $email . ' -> HTTP ' . $status . ' ' . $response);
+	    }
+	    curl_close($curl);
+
+	    return $response === false ? '' : $response;
 	}
 }

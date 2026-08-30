@@ -2,14 +2,14 @@
 
 namespace Initium;
 
-// Task CRUD API. Board-scoped; every action authorizes via board_for_write().
-// Add + edit-text only here; the complete toggle is CODE-83 and Clear
-// Completed (the only delete path) is CODE-84.
+// Task CRUD API. Board-scoped; every action authorizes via board_for_action().
+// Add + edit-text are owner-only; complete is gated by allow_complete. Clear
+// Completed (the only delete path) lives on TaskList (CODE-84).
 class Task extends Base {
 
-    // POST /b/{slug}/lists/{id}/tasks
+    // POST /b/{slug}/lists/{id}/tasks — owner only (adding tasks isn't shareable)
     public function create($vars) {
-        $board = $this->board_for_write($vars['slug']);
+        $board = $this->board_for_action($vars['slug']);
         if(!$this->db->has('lists', ['id' => $vars['id'], 'board_id' => $board['id']])) {
             $this->json_error('List not found.', 404);
         }
@@ -17,14 +17,13 @@ class Task extends Base {
         $text = $this->valid_text();
 
         $position = $this->next_position('tasks', ['list_id' => $vars['id']]);
-
         $this->db->insert('tasks', ['list_id' => $vars['id'], 'text' => $text, 'completed' => 0, 'position' => $position]);
         $this->json(['id' => (int) $this->db->id(), 'text' => $text, 'completed' => 0, 'position' => $position]);
     }
 
-    // PUT /b/{slug}/tasks/{id}
+    // PUT /b/{slug}/tasks/{id} — owner only (editing text isn't shareable)
     public function edit($vars) {
-        $board = $this->board_for_write($vars['slug']);
+        $board = $this->board_for_action($vars['slug']);
         $this->require_task_in_board($vars['id'], $board['id']);
 
         $text = $this->valid_text();
@@ -32,10 +31,10 @@ class Task extends Base {
         $this->json(['id' => (int) $vars['id'], 'text' => $text]);
     }
 
-    // PUT /b/{slug}/tasks/{id}/complete — set (not toggle) the completed flag.
-    // The client sends the desired state, so it's idempotent and race-free.
+    // PUT /b/{slug}/tasks/{id}/complete — owner or allow_complete. Sets (not
+    // blindly toggles) the flag from the client-sent state; idempotent.
     public function complete($vars) {
-        $board = $this->board_for_write($vars['slug']);
+        $board = $this->board_for_action($vars['slug'], 'allow_complete');
         $this->require_task_in_board($vars['id'], $board['id']);
 
         $input = $this->json_input();

@@ -95,19 +95,26 @@ class Base {
         return ($max === null || $max === '') ? 0 : (int) $max + 1;
     }
 
-    // Load a board by slug and authorize the caller to mutate it, or send a
-    // JSON error and die. Owner-only for now; CODE-86 opens specific actions to
-    // anonymous link-holders per board_permissions.
-    protected function board_for_write(string $slug): array {
+    // Load a board by slug and authorize the caller for a mutating action, or
+    // send a JSON error and die. The owner may do anything. An anonymous /
+    // non-owner caller is allowed only when $permission (a board_permissions
+    // column) is given and enabled for this board; owner-only actions pass none.
+    protected function board_for_action(string $slug, ?string $permission = null): array {
         $board = $this->db->get('boards', ['id', 'owner_id', 'slug'], ['slug' => $slug]);
         if(!$board) {
             $this->json_error('Board not found.', 404);
         }
+
         $viewer = Cred::userDetails();
-        if(!$viewer || $viewer['user_id'] != $board['owner_id']) {
-            $this->json_error('Not allowed.', 403);
+        if($viewer && $viewer['user_id'] == $board['owner_id']) {
+            return $board;
         }
-        return $board;
+
+        if($permission !== null && (int) $this->db->get('board_permissions', $permission, ['board_id' => $board['id']]) === 1) {
+            return $board;
+        }
+
+        $this->json_error('Not allowed.', 403);
     }
 
 }

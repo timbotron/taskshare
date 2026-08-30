@@ -149,7 +149,7 @@ class Board extends Base {
 
     // PUT /b/{slug}/permissions — owner-only: set the board's sharing flags.
     public function save_permissions($vars) {
-        $board = $this->board_for_write($vars['slug']);
+        $board = $this->board_for_action($vars['slug']);
         $input = $this->json_input();
 
         $update = [];

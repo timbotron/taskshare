@@ -16,7 +16,7 @@
     m.mount(demoRoot, Demo)
   }
 
-  // --- Board view (CODE-81 hydrate + CODE-82 CRUD + CODE-83 complete toggle) ---
+  // --- Board view (CODE-81 hydrate + CODE-82 CRUD + 83 complete + 84 clear + 86 perms) ---
   var boardRoot = document.getElementById('board-app')
   if (!boardRoot || !window.__TASKSHARE__) return
 
@@ -25,11 +25,18 @@
   var isOwner = state.is_owner
   var base = '/b/' + slug
 
-  // Capability seams. CODE-86 widens these to (isOwner || permissions.allow_*).
+  // Per-action capabilities. The owner may do anything; an anonymous link-holder
+  // may do only what the board permits. These MIRROR the server (board_for_action);
+  // the API is authoritative — hiding a control is convenience, not security.
   // Adding/editing tasks and renaming lists are owner-only (not shareable perms).
-  var canManage = isOwner          // new/rename/delete lists, add/edit tasks, list options
-  var canComplete = isOwner        // toggle a task's completed flag
-  var canClearCompleted = isOwner  // delete a list's completed tasks
+  var p = state.permissions
+  var canAddTask = isOwner
+  var canEditTask = isOwner
+  var canRenameList = isOwner
+  var canCreateList = isOwner || p.allow_create_lists
+  var canDeleteList = isOwner || p.allow_delete_lists
+  var canComplete = isOwner || p.allow_complete
+  var canClearCompleted = isOwner || p.allow_clear_completed
 
   var boardUi = { showSettings: false }
 
@@ -51,8 +58,7 @@
   function addList () {
     api('POST', base + '/lists', {}).then(function (list) {
       initListUi(list)
-      list._ui.editingName = true // drop straight into naming the new list
-      list._ui.menu = true
+      if (canRenameList) { list._ui.editingName = true; list._ui.menu = true } // owner names it inline
       state.lists.push(list)
     })
   }
@@ -116,9 +122,11 @@
   function focusOnCreate (vnode) { vnode.dom.focus() }
 
   function hasCompleted (list) { return list.tasks.some(function (t) { return t.completed }) }
-  // The ▾ options control shows when there's anything to offer: owner management,
-  // or a permitted Clear completed once the list actually has struck tasks.
-  function canOpenOptions (list) { return canManage || (canClearCompleted && hasCompleted(list)) }
+  // The ▾ options control shows when there's anything to offer for this caller.
+  function canOpenOptions (list) {
+    return canAddTask || canRenameList || canEditTask || canDeleteList ||
+      (canClearCompleted && hasCompleted(list))
+  }
 
   // --- components ---
   var TaskRow = {
@@ -134,8 +142,8 @@
         ? m('button', Object.assign({ title: 'Complete / un-complete', onclick: function () { toggleComplete(task) } }, checkAttrs), '✓')
         : m('span', checkAttrs, '✓')
 
-      // Edit mode (entered from the list options): the text becomes an input.
-      var body = (canManage && list._ui.editing)
+      // Edit mode (owner, entered from the list options): text becomes an input.
+      var body = (canEditTask && list._ui.editing)
         ? m('input', {
             class: 'w-full rounded border border-gray-300 px-2 py-1 text-sm',
             value: task._editValue,
@@ -153,17 +161,11 @@
     view: function (vnode) {
       var list = vnode.attrs.list
       var items = []
-      if (canManage) {
-        items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.adding = true } }, 'Add task'))
-        items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.editingName = true; list._ui.nameValue = list.title } }, 'Edit name'))
-        items.push(m('button', { class: 'menu-btn', onclick: function () { toggleEditTasks(list) } }, list._ui.editing ? 'Done editing' : 'Edit tasks'))
-      }
-      if (canClearCompleted && hasCompleted(list)) {
-        items.push(m('button', { class: 'menu-btn', onclick: function () { clearCompleted(list) } }, 'Clear completed'))
-      }
-      if (canManage) {
-        items.push(m('button', { class: 'menu-btn text-red-700', onclick: function () { deleteList(list) } }, 'Delete list'))
-      }
+      if (canAddTask) items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.adding = true } }, 'Add task'))
+      if (canRenameList) items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.editingName = true; list._ui.nameValue = list.title } }, 'Edit name'))
+      if (canEditTask) items.push(m('button', { class: 'menu-btn', onclick: function () { toggleEditTasks(list) } }, list._ui.editing ? 'Done editing' : 'Edit tasks'))
+      if (canClearCompleted && hasCompleted(list)) items.push(m('button', { class: 'menu-btn', onclick: function () { clearCompleted(list) } }, 'Clear completed'))
+      if (canDeleteList) items.push(m('button', { class: 'menu-btn text-red-700', onclick: function () { deleteList(list) } }, 'Delete list'))
       return m('div', { class: 'mb-2 flex flex-wrap gap-1' }, items)
     },
   }
@@ -171,7 +173,7 @@
   var ListHeader = {
     view: function (vnode) {
       var list = vnode.attrs.list
-      if (canManage && list._ui.editingName) {
+      if (canRenameList && list._ui.editingName) {
         return m('div', { class: 'mb-2 flex gap-1' }, [
           m('input', {
             class: 'w-full rounded border border-gray-300 px-2 py-1 font-semibold',
@@ -225,7 +227,7 @@
               return m(TaskRow, { key: t.id, list: list, task: t })
             }))
           : m('p', { class: 'text-sm text-gray-400' }, 'No tasks yet.'),
-        canManage && list._ui.adding ? m(AddTask, { list: list }) : null,
+        canAddTask && list._ui.adding ? m(AddTask, { list: list }) : null,
       ])
     },
   }
@@ -258,9 +260,9 @@
   var BoardApp = {
     view: function () {
       return m('div', [
-        canManage
+        (canCreateList || isOwner)
           ? m('div', { class: 'mb-4 flex gap-2' }, [
-              m('button', { class: 'btn', onclick: addList }, '+ New list'),
+              canCreateList ? m('button', { class: 'btn', onclick: addList }, '+ New list') : null,
               isOwner
                 ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
                 : null,
@@ -271,7 +273,7 @@
           ? m('div', { class: 'board-grid' }, state.lists.map(function (list) {
               return m(ListCard, { key: list.id, list: list })
             }))
-          : m('p', { class: 'text-gray-500' }, canManage ? 'No lists yet. Add one to get started.' : 'This board has no lists yet.'),
+          : m('p', { class: 'text-gray-500' }, canCreateList ? 'No lists yet. Add one to get started.' : 'This board has no lists yet.'),
       ])
     },
   }

@@ -15,9 +15,12 @@ Dead-simple shared task lists. This is the full rewrite of the original TaskShar
 
 ```bash
 cp app/config/_env.php.template app/config/_env.php   # DB_SERVER=db, DB_NAME/USER/PASS=taskshare
-docker compose run --rm composer                       # one-time: install vendor/
-docker compose up -d                                   # app on http://localhost:8080
+docker compose up -d                                   # installs vendor/ on first run; app on http://localhost:8080
 ```
+
+`up` runs a one-shot `composer` service that installs `vendor/` when it's missing (the `php`
+service waits for it), so a fresh clone needs no separate install step. To reinstall deps, delete
+`vendor/` and `up` again (or run `docker compose run --rm composer sh -c 'composer install'`).
 
 On first boot the `db` container auto-imports the migrations in order:
 `001-migration-start.sql` (the Initium `users` table) then `002-migration-taskshare.sql`

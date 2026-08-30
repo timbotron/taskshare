@@ -1,8 +1,7 @@
 # Lightweight local/test stack for TaskShare: Caddy + php-fpm + MySQL.
 # Usage:
 #   cp app/config/_env.php.template app/config/_env.php   # DB_SERVER=db, DB_NAME/USER/PASS=taskshare
-#   docker compose run --rm composer                       # one-time: install vendor/
-#   docker compose up -d                                   # app on http://localhost:8080
+#   docker compose up -d                                   # installs vendor/ if missing; app on http://localhost:8080
 services:
   db:
     image: mysql:8
@@ -32,6 +31,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      composer:
+        condition: service_completed_successfully
 
   caddy:
     image: caddy:2
@@ -43,14 +44,15 @@ services:
     depends_on:
       - php
 
-  # one-shot: `docker compose run --rm composer` to populate vendor/
+  # One-shot dependency install, run automatically on `up` (php waits for it).
+  # Only installs when vendor/ is missing, so repeat ups stay fast.
   composer:
     image: composer:2
     working_dir: /srv
     volumes:
       - ./:/srv
-    command: install --ignore-platform-reqs --no-interaction
-    profiles: ["setup"]
+    entrypoint: ["sh", "-c"]
+    command: ["[ -f vendor/autoload.php ] || composer install --ignore-platform-reqs --no-interaction"]
 
 volumes:
   dbdata:

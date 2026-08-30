@@ -56,7 +56,10 @@
   }
 
   .field {
-    @apply w-full border border-line bg-surface px-3 py-2 text-fg placeholder:text-muted focus:border-accent focus:outline-none;
+    @apply w-full border border-line px-3 py-2 text-fg placeholder:text-muted focus:border-accent focus:outline-none;
+    /* Set explicitly: bg-surface gets dropped from this @apply when mixed with
+       the focus/placeholder variants, leaving inputs on the UA white in dark. */
+    background-color: var(--surface);
     border-radius: var(--radius);
   }
 

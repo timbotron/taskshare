@@ -18,11 +18,11 @@
   }
 
   .board-grid {
-    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
   }
 
   .task-row {
-    @apply flex items-center gap-2 rounded px-2 py-1;
+    @apply flex items-center gap-2 rounded px-2 py-1.5;
   }
 
   .task-text.is-done {
@@ -30,7 +30,7 @@
   }
 
   .check-btn {
-    @apply flex h-6 w-6 shrink-0 items-center justify-center rounded border border-gray-300 text-xs text-transparent hover:border-accent;
+    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded border border-gray-300 text-sm text-transparent hover:border-accent;
   }
 
   .check-btn.is-checked {
@@ -38,10 +38,10 @@
   }
 
   .options-btn {
-    @apply rounded px-2 text-gray-400 hover:text-gray-700;
+    @apply rounded px-3 py-1 text-lg leading-none text-gray-400 hover:text-gray-700;
   }
 
   .menu-btn {
-    @apply rounded border border-gray-300 px-2 py-1 text-sm hover:bg-gray-50;
+    @apply rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50;
   }
 }

@@ -31,6 +31,8 @@
   var canComplete = isOwner        // toggle a task's completed flag
   var canClearCompleted = isOwner  // delete a list's completed tasks
 
+  var boardUi = { showSettings: false }
+
   state.lists.forEach(initListUi)
   function initListUi (list) {
     list._ui = { menu: false, editingName: false, nameValue: list.title, adding: false, addValue: '', editing: false }
@@ -77,6 +79,14 @@
     if (!window.confirm('Clear all completed tasks from this list?')) return
     api('DELETE', base + '/lists/' + list.id + '/completed').then(function () {
       list.tasks = list.tasks.filter(function (t) { return !t.completed })
+    })
+  }
+  function savePermissions () {
+    api('PUT', base + '/permissions', {
+      allow_complete: state.permissions.allow_complete,
+      allow_clear_completed: state.permissions.allow_clear_completed,
+      allow_create_lists: state.permissions.allow_create_lists,
+      allow_delete_lists: state.permissions.allow_delete_lists,
     })
   }
 
@@ -220,12 +230,43 @@
     },
   }
 
+  var PERMISSION_LABELS = [
+    ['allow_complete', 'Let anyone with the link complete items'],
+    ['allow_clear_completed', 'Let them clear completed tasks'],
+    ['allow_create_lists', 'Let them create lists'],
+    ['allow_delete_lists', 'Let them delete lists'],
+  ]
+  var Settings = {
+    view: function () {
+      return m('div', { class: 'list-card mb-4 max-w-xl' }, [
+        m('h2', { class: 'mb-1 font-semibold' }, 'Sharing permissions'),
+        m('p', { class: 'mb-2 text-sm text-gray-500' }, 'Anyone with the link can view. Choose what they can also do:'),
+        PERMISSION_LABELS.map(function (row) {
+          return m('label', { class: 'flex items-center gap-2 py-1 text-sm' }, [
+            m('input', {
+              type: 'checkbox',
+              checked: state.permissions[row[0]],
+              onchange: function (e) { state.permissions[row[0]] = e.target.checked; savePermissions() },
+            }),
+            row[1],
+          ])
+        }),
+      ])
+    },
+  }
+
   var BoardApp = {
     view: function () {
       return m('div', [
         canManage
-          ? m('div', { class: 'mb-4' }, m('button', { class: 'btn', onclick: addList }, '+ New list'))
+          ? m('div', { class: 'mb-4 flex gap-2' }, [
+              m('button', { class: 'btn', onclick: addList }, '+ New list'),
+              isOwner
+                ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
+                : null,
+            ])
           : null,
+        isOwner && boardUi.showSettings ? m(Settings) : null,
         state.lists.length
           ? m('div', { class: 'board-grid' }, state.lists.map(function (list) {
               return m(ListCard, { key: list.id, list: list })

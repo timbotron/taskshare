@@ -147,6 +147,19 @@ class Board extends Base {
         echo $this->templates->render('board');
     }
 
+    // PUT /b/{slug}/permissions — owner-only: set the board's sharing flags.
+    public function save_permissions($vars) {
+        $board = $this->board_for_write($vars['slug']);
+        $input = $this->json_input();
+
+        $update = [];
+        foreach(['allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'] as $flag) {
+            $update[$flag] = empty($input[$flag]) ? 0 : 1;
+        }
+        $this->db->update('board_permissions', $update, ['board_id' => $board['id']]);
+        $this->json($update);
+    }
+
     // Fetch a board only if it belongs to the current user; 404 otherwise
     // (never reveal or mutate someone else's board).
     protected function owned_board_or_404($id): array {

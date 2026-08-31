@@ -99,7 +99,7 @@
     if (list._ui.editing) list.tasks.forEach(function (t) { t._editValue = t.text })
   }
   function clearCompleted (list) {
-    if (!window.confirm('Clear all completed tasks from this list?')) return
+    // No confirm — it's a frequent action and only removes already-completed tasks.
     api('DELETE', base + '/lists/' + list.id + '/completed').then(function () {
       list.tasks = list.tasks.filter(function (t) { return !t.completed })
     })

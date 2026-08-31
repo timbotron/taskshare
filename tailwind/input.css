@@ -96,8 +96,12 @@
   }
 
   .icon-btn {
-    @apply flex h-8 w-8 items-center justify-center border border-line text-muted transition hover:border-accent hover:text-accent;
+    @apply flex h-11 w-11 items-center justify-center border border-line text-muted transition hover:border-accent hover:text-accent;
     border-radius: var(--radius);
+  }
+
+  .icon-btn svg {
+    @apply h-5 w-5;
   }
 
   .icon-btn.icon-danger {
@@ -108,8 +112,12 @@
     @apply border-accent text-accent;
   }
 
-  /* Inline pencil next to the list title stays borderless. */
+  /* Inline pencil next to the list title stays borderless and a touch smaller. */
   .icon-btn.icon-inline {
-    @apply h-6 w-6 border-0;
+    @apply h-7 w-7 border-0;
+  }
+
+  .icon-btn.icon-inline svg {
+    @apply h-4 w-4;
   }
 }

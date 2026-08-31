@@ -220,7 +220,7 @@
       var list = vnode.attrs.list
       return m('div', { class: 'mt-2 flex gap-1' }, [
         m('input', {
-          class: 'w-full rounded border border-gray-300 px-2 py-1 text-sm',
+          class: 'field text-sm',
           placeholder: 'New task',
           value: list._ui.addValue,
           oncreate: focusOnCreate,

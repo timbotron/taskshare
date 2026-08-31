@@ -205,7 +205,7 @@
       if (canEditTask) items.push(iconBtn(ICON.editTasks, list._ui.editing ? 'Done editing' : 'Edit tasks', function () { toggleEditTasks(list) }, list._ui.editing ? 'is-active' : ''))
       if (canClearCompleted && hasCompleted(list)) items.push(iconBtn(ICON.clear, 'Clear completed', function () { clearCompleted(list) }))
       if (canDeleteList) items.push(iconBtn(ICON.trash, 'Delete list', function () { deleteList(list) }, 'icon-danger'))
-      return m('div', { class: 'mb-2 flex flex-wrap gap-1' }, items)
+      return m('div', { class: 'mb-2 flex flex-wrap gap-3' }, items)
     },
   }
 

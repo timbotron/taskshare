@@ -94,4 +94,21 @@
     @apply border border-line px-3 py-1.5 text-sm text-fg hover:border-accent;
     border-radius: var(--radius);
   }
+
+  .icon-btn {
+    @apply flex h-8 w-8 items-center justify-center text-muted transition hover:text-accent;
+    border-radius: var(--radius);
+  }
+
+  .icon-btn.icon-danger {
+    @apply text-red-600 hover:text-red-500;
+  }
+
+  .icon-btn.is-active {
+    @apply text-accent;
+  }
+
+  .icon-btn.icon-inline {
+    @apply h-6 w-6;
+  }
 }

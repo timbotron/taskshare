@@ -145,6 +145,28 @@
       (canClearCompleted && hasCompleted(list))
   }
 
+  // --- inline SVG icons (Lucide, ISC), drawn with currentColor so they theme ---
+  function iconSvg (parts, size) {
+    return m('svg', {
+      width: size || 18, height: size || 18, viewBox: '0 0 24 24', fill: 'none',
+      stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round',
+      'stroke-linejoin': 'round', 'aria-hidden': 'true',
+    }, parts.map(function (p) { return typeof p === 'string' ? m('path', { d: p }) : m('rect', p) }))
+  }
+  var ICON = {
+    plus: ['M5 12h14', 'M12 5v14'],
+    pencil: ['M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z', 'm15 5 4 4'],
+    editTasks: [{ x: 3, y: 4, width: 6, height: 6, rx: 1 }, 'M13 5h8', 'M13 12h8', 'M13 19h8', 'm3 17 2 2 4-4'],
+    clear: ['m16 22-1-4', 'M19 14a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2h-3a1 1 0 0 1-1-1V4a2 2 0 0 0-4 0v5a1 1 0 0 1-1 1H6a2 2 0 0 0-2 2v1a1 1 0 0 0 1 1', 'M19 14H5l-1.973 6.767A1 1 0 0 0 4 22h16a1 1 0 0 0 .973-1.233z', 'm8 22 1-4'],
+    trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2', 'M10 11v6', 'M14 11v6'],
+  }
+  function iconBtn (parts, label, onclick, extraClass) {
+    return m('button', {
+      class: 'icon-btn' + (extraClass ? ' ' + extraClass : ''),
+      title: label, 'aria-label': label, onclick: onclick,
+    }, iconSvg(parts))
+  }
+
   // --- components ---
   var TaskRow = {
     view: function (vnode) {
@@ -174,15 +196,15 @@
     },
   }
 
+  // Icon-only options (CODE-92). Edit name lives next to the title (below), not here.
   var ListMenu = {
     view: function (vnode) {
       var list = vnode.attrs.list
       var items = []
-      if (canAddTask) items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.adding = true } }, 'Add task'))
-      if (canRenameList) items.push(m('button', { class: 'menu-btn', onclick: function () { list._ui.editingName = true; list._ui.nameValue = list.title } }, 'Edit name'))
-      if (canEditTask) items.push(m('button', { class: 'menu-btn', onclick: function () { toggleEditTasks(list) } }, list._ui.editing ? 'Done editing' : 'Edit tasks'))
-      if (canClearCompleted && hasCompleted(list)) items.push(m('button', { class: 'menu-btn', onclick: function () { clearCompleted(list) } }, 'Clear completed'))
-      if (canDeleteList) items.push(m('button', { class: 'menu-btn text-red-700', onclick: function () { deleteList(list) } }, 'Delete list'))
+      if (canAddTask) items.push(iconBtn(ICON.plus, 'Add task', function () { list._ui.adding = true }))
+      if (canEditTask) items.push(iconBtn(ICON.editTasks, list._ui.editing ? 'Done editing' : 'Edit tasks', function () { toggleEditTasks(list) }, list._ui.editing ? 'is-active' : ''))
+      if (canClearCompleted && hasCompleted(list)) items.push(iconBtn(ICON.clear, 'Clear completed', function () { clearCompleted(list) }))
+      if (canDeleteList) items.push(iconBtn(ICON.trash, 'Delete list', function () { deleteList(list) }, 'icon-danger'))
       return m('div', { class: 'mb-2 flex flex-wrap gap-1' }, items)
     },
   }
@@ -203,11 +225,18 @@
         ])
       }
       return m('div', { class: 'mb-2 flex items-center justify-between gap-2' }, [
-        m('h3', { class: 'font-semibold' }, list.title),
+        m('div', { class: 'flex items-center gap-1.5' }, [
+          m('h3', { class: 'font-semibold' }, list.title),
+          // Edit-name pencil: next to the title, only while the accordion is open.
+          (canRenameList && list._ui.menu)
+            ? iconBtn(ICON.pencil, 'Edit name', function () { list._ui.editingName = true; list._ui.nameValue = list.title }, 'icon-inline')
+            : null,
+        ]),
         canOpenOptions(list)
           ? m('button', {
               class: 'options-btn',
               title: 'List options',
+              'aria-label': 'List options',
               onclick: function () { list._ui.menu = !list._ui.menu },
             }, list._ui.menu ? '▴' : '▾')
           : null,

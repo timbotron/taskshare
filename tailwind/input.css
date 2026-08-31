@@ -13,8 +13,8 @@
     --fg: #111827;
     --muted: #6b7280;
     --border: #e5e7eb;
-    --accent: #7fdbff;
-    --accent-fg: #0a0a0a;
+    --accent: #51a351; /* legacy TaskShare green (Bootstrap btn-success) */
+    --accent-fg: #ffffff;
     --radius: 0.375rem;
   }
 

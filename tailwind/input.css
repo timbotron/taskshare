@@ -64,7 +64,9 @@
   }
 
   .board-grid {
-    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+    /* Cap at 3 columns so cards stay wide enough for the option-button row to
+       fit on one line above 1280px (was xl:grid-cols-4, which wrapped them). */
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
   }
 
   .task-row {

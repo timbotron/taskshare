@@ -146,7 +146,7 @@ class Board extends Base {
         $owner_theme = $this->db->get('users', 'theme', ['id' => $board['owner_id']]) ?: 'light';
 
         $this->templates->addData(['page_title' => $board['title'] . ' — ' . SITE_NAME, 'owner_theme' => $owner_theme], ['basic']);
-        $this->templates->addData(['board' => $board, 'is_owner' => $is_owner, 'state_json' => $state_json], ['board']);
+        $this->templates->addData(['state_json' => $state_json], ['board']);
         echo $this->templates->render('board');
     }
 

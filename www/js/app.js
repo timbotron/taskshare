@@ -309,23 +309,29 @@
 
   var BoardApp = {
     view: function () {
+      var hasChrome = canCreateList || isOwner
       return m('div', [
-        (canCreateList || isOwner)
-          ? m('div', { class: 'mb-4 flex items-center justify-end gap-2' }, [
-              boardUi.showChrome
-                ? m('div', { class: 'flex gap-2' }, [
-                    canCreateList ? m('button', { class: 'btn', onclick: addList }, '+ New list') : null,
-                    isOwner
-                      ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
-                      : null,
-                  ])
+        // Header: board title on the left; owner badge + options gear on the right.
+        m('div', { class: 'mb-6 flex items-center justify-between gap-2' }, [
+          m('h1', { class: 'text-2xl font-semibold' }, state.board.title),
+          m('div', { class: 'flex items-center gap-3' }, [
+            isOwner ? m('span', { class: 'text-sm text-gray-500' }, 'You own this board') : null,
+            hasChrome
+              ? m('button', {
+                  class: 'options-btn' + (boardUi.showChrome ? ' is-open' : ''),
+                  title: 'Board options',
+                  'aria-label': 'Board options',
+                  onclick: function () { boardUi.showChrome = !boardUi.showChrome },
+                }, iconSvg(ICON.gear))
+              : null,
+          ]),
+        ]),
+        hasChrome && boardUi.showChrome
+          ? m('div', { class: 'mb-4 flex justify-end gap-2' }, [
+              canCreateList ? m('button', { class: 'btn', onclick: addList }, '+ New list') : null,
+              isOwner
+                ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
                 : null,
-              m('button', {
-                class: 'options-btn' + (boardUi.showChrome ? ' is-open' : ''),
-                title: 'Board options',
-                'aria-label': 'Board options',
-                onclick: function () { boardUi.showChrome = !boardUi.showChrome },
-              }, iconSvg(ICON.gear)),
             ])
           : null,
         isOwner && boardUi.showChrome && boardUi.showSettings ? m(Settings) : null,

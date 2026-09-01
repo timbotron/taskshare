@@ -41,6 +41,7 @@ $dispatcher = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $r)
     $r->delete('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}',['\Initium\TaskList','delete']);
     $r->delete('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}/completed',['\Initium\TaskList','clear_completed']);
     $r->post('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}/tasks',['\Initium\Task','create']);
+    $r->put('/b/{slug:[A-Za-z0-9]+}/lists/{id:\d+}/tasks/reorder',['\Initium\Task','reorder']);
     $r->put('/b/{slug:[A-Za-z0-9]+}/tasks/{id:\d+}',['\Initium\Task','edit']);
     $r->put('/b/{slug:[A-Za-z0-9]+}/tasks/{id:\d+}/complete',['\Initium\Task','complete']);
 

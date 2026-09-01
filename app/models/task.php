@@ -43,6 +43,33 @@ class Task extends Base {
         $this->json(['id' => (int) $vars['id'], 'completed' => $completed]);
     }
 
+    // PUT /b/{slug}/lists/{id}/tasks/reorder — owner only (reordering is an edit
+    // action, like editing text). Body: { order: [taskId, ...] } in the new order.
+    public function reorder($vars) {
+        $board = $this->board_for_action($vars['slug']);
+        if(!$this->db->has('lists', ['id' => $vars['id'], 'board_id' => $board['id']])) {
+            $this->json_error('List not found.', 404);
+        }
+
+        $order = $this->json_input()['order'] ?? null;
+        if(!is_array($order) || count($order) === 0) {
+            $this->json_error('Invalid order.', 422);
+        }
+
+        // Position only the tasks that actually belong to this list; the client
+        // sends the full ordered set, so foreign/unknown ids are ignored.
+        $valid = array_flip(array_map('intval', $this->db->select('tasks', 'id', ['list_id' => $vars['id']])));
+        $position = 0;
+        foreach($order as $task_id) {
+            $task_id = (int) $task_id;
+            if(isset($valid[$task_id])) {
+                $this->db->update('tasks', ['position' => $position], ['id' => $task_id]);
+                $position++;
+            }
+        }
+        $this->json(['ok' => true]);
+    }
+
     protected function require_task_in_board($task_id, $board_id) {
         $task = $this->db->get('tasks', ['id', 'list_id'], ['id' => $task_id]);
         if(!$task || !$this->db->has('lists', ['id' => $task['list_id'], 'board_id' => $board_id])) {

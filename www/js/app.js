@@ -136,6 +136,27 @@
     })
   }
 
+  // --- drag-to-reorder (edit mode only, owner) ---
+  var dragTaskId = null
+  // Move dragged task relative to target, dropping before/after by cursor half.
+  function moveTask (list, dragId, targetId, after) {
+    if (dragId == null || dragId === targetId) return
+    var tasks = list.tasks
+    var from = tasks.findIndex(function (t) { return t.id === dragId })
+    if (from < 0) return
+    var moved = tasks.splice(from, 1)[0]
+    var to = tasks.findIndex(function (t) { return t.id === targetId })
+    if (to < 0) { tasks.splice(from, 0, moved); return } // target gone: undo
+    tasks.splice(after ? to + 1 : to, 0, moved)
+  }
+  function persistTaskOrder (list) {
+    api('PUT', base + '/lists/' + list.id + '/tasks/reorder', {
+      order: list.tasks.map(function (t) { return t.id }),
+    }).then(function () {
+      list.tasks.forEach(function (t, i) { t.position = i })
+    })
+  }
+
   function focusOnCreate (vnode) { vnode.dom.focus() }
 
   function hasCompleted (list) { return list.tasks.some(function (t) { return t.completed }) }
@@ -163,6 +184,10 @@
     clear: ['m16 22-1-4', 'M19 14a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2h-3a1 1 0 0 1-1-1V4a2 2 0 0 0-4 0v5a1 1 0 0 1-1 1H6a2 2 0 0 0-2 2v1a1 1 0 0 0 1 1', 'M19 14H5l-1.973 6.767A1 1 0 0 0 4 22h16a1 1 0 0 0 .973-1.233z', 'm8 22 1-4'],
     trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2', 'M10 11v6', 'M14 11v6'],
     gear: ['M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z', { cx: 12, cy: 12, r: 3 }],
+    grip: [
+      { cx: 9, cy: 6, r: 1.4, fill: 'currentColor' }, { cx: 9, cy: 12, r: 1.4, fill: 'currentColor' }, { cx: 9, cy: 18, r: 1.4, fill: 'currentColor' },
+      { cx: 15, cy: 6, r: 1.4, fill: 'currentColor' }, { cx: 15, cy: 12, r: 1.4, fill: 'currentColor' }, { cx: 15, cy: 18, r: 1.4, fill: 'currentColor' },
+    ],
   }
   function iconBtn (parts, label, onclick, extraClass) {
     return m('button', {
@@ -177,6 +202,7 @@
       var list = vnode.attrs.list
       var task = vnode.attrs.task
       var checked = !!task.completed
+      var editing = canEditTask && list._ui.editing
 
       // Left check button: toggles complete. Interactive only for those allowed;
       // otherwise a static indicator so viewers still see completion state.
@@ -186,7 +212,7 @@
         : m('span', checkAttrs, '✓')
 
       // Edit mode (owner, entered from the list options): text becomes an input.
-      var body = (canEditTask && list._ui.editing)
+      var body = editing
         ? m('input', {
             class: 'field text-sm',
             value: task._editValue,
@@ -196,7 +222,34 @@
           })
         : m('span', { class: 'task-text flex-1' + (checked ? ' is-done' : '') }, task.text)
 
-      return m('li', { class: 'task-row' }, [check, body])
+      var children = [check, body]
+      var rowAttrs = { class: 'task-row' + (dragTaskId === task.id ? ' opacity-50' : '') }
+
+      // Edit mode adds a drag handle; the row is a drop target. Only the handle
+      // is draggable so the text input stays freely editable (CODE-105).
+      if (editing) {
+        children.unshift(m('span', {
+          class: 'drag-handle shrink-0 cursor-grab text-muted',
+          title: 'Drag to reorder',
+          draggable: true,
+          ondragstart: function (e) {
+            dragTaskId = task.id
+            e.dataTransfer.effectAllowed = 'move'
+            try { e.dataTransfer.setData('text/plain', String(task.id)) } catch (err) {}
+          },
+          ondragend: function () { dragTaskId = null },
+        }, iconSvg(ICON.grip)))
+        rowAttrs.ondragover = function (e) { e.preventDefault(); e.redraw = false } // allow drop, no redraw storm
+        rowAttrs.ondrop = function (e) {
+          e.preventDefault()
+          var rect = e.currentTarget.getBoundingClientRect()
+          moveTask(list, dragTaskId, task.id, (e.clientY - rect.top) > rect.height / 2)
+          persistTaskOrder(list)
+          dragTaskId = null
+        }
+      }
+
+      return m('li', rowAttrs, children)
     },
   }
 

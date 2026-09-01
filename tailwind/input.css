@@ -16,6 +16,7 @@
     --accent: #51a351; /* legacy TaskShare green (Bootstrap btn-success) */
     --accent-fg: #ffffff;
     --radius: 0.375rem;
+    --cs: light; /* color-scheme for native controls (checkboxes) */
   }
 
   :root[data-theme='dark'] {
@@ -27,6 +28,7 @@
     --accent: #7fdbff;
     --accent-fg: #05070a;
     --radius: 0; /* squared corners for the Tron look */
+    --cs: dark;
   }
 
   /* Final fallback: honor the OS only when no explicit light choice is set. */
@@ -40,6 +42,7 @@
       --accent: #7fdbff;
       --accent-fg: #05070a;
       --radius: 0;
+      --cs: dark;
     }
   }
 }
@@ -48,6 +51,15 @@
   .btn {
     @apply inline-block px-4 py-2 font-medium bg-accent text-accent-fg transition hover:opacity-90;
     border-radius: var(--radius);
+  }
+
+  /* Native checkbox themed to the app: accent-colored check, and color-scheme
+     so the box itself follows the light/dark theme instead of the UA default. */
+  .perm-checkbox {
+    accent-color: var(--accent);
+    color-scheme: var(--cs);
+    width: 1rem;
+    height: 1rem;
   }
 
   .list-card {

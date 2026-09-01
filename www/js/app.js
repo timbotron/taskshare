@@ -349,6 +349,7 @@
         PERMISSION_LABELS.map(function (row) {
           return m('label', { class: 'flex items-center gap-2 py-1 text-sm' }, [
             m('input', {
+              class: 'perm-checkbox',
               type: 'checkbox',
               checked: state.permissions[row[0]],
               onchange: function (e) { state.permissions[row[0]] = e.target.checked; savePermissions() },

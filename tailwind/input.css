@@ -92,6 +92,10 @@
     border-radius: var(--radius);
   }
 
+  .options-btn.is-open {
+    @apply text-accent;
+  }
+
   .menu-btn {
     @apply border border-line px-3 py-1.5 text-sm text-fg hover:border-accent;
     border-radius: var(--radius);

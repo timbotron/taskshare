@@ -55,7 +55,7 @@
   var canComplete = isOwner || p.allow_complete
   var canClearCompleted = isOwner || p.allow_clear_completed
 
-  var boardUi = { showSettings: false }
+  var boardUi = { showChrome: false, showSettings: false }
 
   state.lists.forEach(initListUi)
   function initListUi (list) {
@@ -151,7 +151,10 @@
       width: size || 18, height: size || 18, viewBox: '0 0 24 24', fill: 'none',
       stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round',
       'stroke-linejoin': 'round', 'aria-hidden': 'true',
-    }, parts.map(function (p) { return typeof p === 'string' ? m('path', { d: p }) : m('rect', p) }))
+    }, parts.map(function (p) {
+      if (typeof p === 'string') return m('path', { d: p })
+      return m(p.cx != null ? 'circle' : 'rect', p)
+    }))
   }
   var ICON = {
     plus: ['M5 12h14', 'M12 5v14'],
@@ -159,6 +162,7 @@
     editTasks: [{ x: 3, y: 4, width: 6, height: 6, rx: 1 }, 'M13 5h8', 'M13 12h8', 'M13 19h8', 'm3 17 2 2 4-4'],
     clear: ['m16 22-1-4', 'M19 14a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2h-3a1 1 0 0 1-1-1V4a2 2 0 0 0-4 0v5a1 1 0 0 1-1 1H6a2 2 0 0 0-2 2v1a1 1 0 0 0 1 1', 'M19 14H5l-1.973 6.767A1 1 0 0 0 4 22h16a1 1 0 0 0 .973-1.233z', 'm8 22 1-4'],
     trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2', 'M10 11v6', 'M14 11v6'],
+    gear: ['M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z', { cx: 12, cy: 12, r: 3 }],
   }
   function iconBtn (parts, label, onclick, extraClass) {
     return m('button', {
@@ -234,11 +238,11 @@
         ]),
         canOpenOptions(list)
           ? m('button', {
-              class: 'options-btn',
+              class: 'options-btn' + (list._ui.menu ? ' is-open' : ''),
               title: 'List options',
               'aria-label': 'List options',
               onclick: function () { list._ui.menu = !list._ui.menu },
-            }, list._ui.menu ? '▴' : '▾')
+            }, iconSvg(ICON.gear))
           : null,
       ])
     },
@@ -307,14 +311,24 @@
     view: function () {
       return m('div', [
         (canCreateList || isOwner)
-          ? m('div', { class: 'mb-4 flex gap-2' }, [
-              canCreateList ? m('button', { class: 'btn', onclick: addList }, '+ New list') : null,
-              isOwner
-                ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
+          ? m('div', { class: 'mb-4 flex items-center justify-end gap-2' }, [
+              boardUi.showChrome
+                ? m('div', { class: 'flex gap-2' }, [
+                    canCreateList ? m('button', { class: 'btn', onclick: addList }, '+ New list') : null,
+                    isOwner
+                      ? m('button', { class: 'menu-btn', onclick: function () { boardUi.showSettings = !boardUi.showSettings } }, boardUi.showSettings ? 'Hide settings' : 'Settings')
+                      : null,
+                  ])
                 : null,
+              m('button', {
+                class: 'options-btn' + (boardUi.showChrome ? ' is-open' : ''),
+                title: 'Board options',
+                'aria-label': 'Board options',
+                onclick: function () { boardUi.showChrome = !boardUi.showChrome },
+              }, iconSvg(ICON.gear)),
             ])
           : null,
-        isOwner && boardUi.showSettings ? m(Settings) : null,
+        isOwner && boardUi.showChrome && boardUi.showSettings ? m(Settings) : null,
         state.lists.length
           ? m('div', { class: 'board-grid' }, state.lists.map(function (list) {
               return m(ListCard, { key: list.id, list: list })

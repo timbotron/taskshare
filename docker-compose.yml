@@ -12,8 +12,11 @@ services:
       MYSQL_USER: taskshare
       MYSQL_PASSWORD: taskshare
     volumes:
-      - ./001-migration-start.sql:/docker-entrypoint-initdb.d/001-migration-start.sql:ro
-      - ./002-migration-taskshare.sql:/docker-entrypoint-initdb.d/002-migration-taskshare.sql:ro
+      # Core ships the users / login_attempts / admin schema (runs first, 001-003);
+      # the app migration (100-) then adds boards/lists/tasks/permissions + users.theme.
+      # not :ro — the app migration below mounts into this dir, which needs a writable parent
+      - ./vendor/timbotron/initium-php-core/migrations:/docker-entrypoint-initdb.d
+      - ./db/100-migration-taskshare.sql:/docker-entrypoint-initdb.d/100-migration-taskshare.sql:ro
       - dbdata:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-utaskshare", "-ptaskshare"]

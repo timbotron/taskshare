@@ -2,6 +2,8 @@
 
 // Copy to _env.php and fill in real values. _env.php is gitignored and never committed.
 
+date_default_timezone_set('America/Los_Angeles'); // app timezone (was app/config/settings.php)
+
 define('SITE_NAME','TaskShare');
 define('SITE_URL','http://localhost:8080/'); // trailing slash required; handlers build URLs as SITE_URL . 'path'
 define('DB_NAME','taskshare');

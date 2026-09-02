@@ -5,8 +5,5 @@
         This is an instance of TaskShare — the open-source todo app you share by link.
         Log in to create your own boards; anyone you send the link to can view, no account needed.
     </p>
-    <p class="text-muted">
-        Learn more, or spin up your own instance, at
-        <a class="text-accent hover:underline" href="https://www.taskshare.org">www.taskshare.org</a>.
-    </p>
+    <a class="btn-outline" href="https://www.taskshare.org">Visit TaskShare</a>
 </div>

@@ -53,6 +53,21 @@
     border-radius: var(--radius);
   }
 
+  /* Outlined twin of .btn: accent border + text, fills on hover. Colors are raw
+     declarations (not @apply) so the var-based accent isn't dropped. */
+  .btn-outline {
+    @apply inline-block px-4 py-2 font-medium transition;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+  }
+
+  .btn-outline:hover {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+
   /* Native checkbox themed to the app: accent-colored check, and color-scheme
      so the box itself follows the light/dark theme instead of the UA default. */
   .perm-checkbox {

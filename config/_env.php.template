@@ -13,3 +13,8 @@ define('EMAIL_MAILGUN_DOMAIN','');
 define('EMAIL_SUPPORT_ADDRESS','support@taskshare.org');
 define('ALLOW_SIGNUPS',1);
 define('LOGIN_TIMEOUT',336); // hours, 336 = 2 weeks
+
+// Optional (core defaults apply if unset):
+// define('ADMIN_EMAIL','you@example.com'); // this logged-in email is an admin (in addition to users.is_admin=1)
+// define('LOGIN_THROTTLE_MAX',10);         // failed logins allowed per IP in the window
+// define('LOGIN_THROTTLE_WINDOW',15);      // window length in minutes

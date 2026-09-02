@@ -1,6 +1,6 @@
-# Serve the front controller from www/, pass PHP to the php-fpm service.
+# Serve the front controller from public/, pass PHP to the php-fpm service.
 :80 {
-	root * /srv/www
+	root * /srv/public
 	encode gzip
 	php_fastcgi php:9000
 	file_server

@@ -7,8 +7,8 @@ module.exports = {
   // is the fallback (handled in the base layer).
   darkMode: ['selector', '[data-theme="dark"]'],
   content: [
-    './app/templates/**/*.php',
-    './www/js/app.js',
+    './templates/**/*.php',
+    './public/js/app.js',
   ],
   theme: {
     extend: {

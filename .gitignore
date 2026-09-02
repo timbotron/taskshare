@@ -1,9 +1,9 @@
 /vendor
-/app/config/_env.php
+/config/_env.php
 /bin/tailwindcss
 push_to_test.sh
-/www/file/*
-/www/rss.xml
+/public/file/*
+/public/rss.xml
 composer.phar
 composer.lock
 .DS_Store

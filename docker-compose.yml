@@ -1,6 +1,6 @@
 # Lightweight local/test stack for TaskShare: Caddy + php-fpm + MySQL.
 # Usage:
-#   cp app/config/_env.php.template app/config/_env.php   # DB_SERVER=db, DB_NAME/USER/PASS=taskshare
+#   cp config/_env.php.template config/_env.php           # DB_SERVER=db, DB_NAME/USER/PASS=taskshare
 #   docker compose run --rm composer                       # one-time: install vendor/
 #   docker compose up -d                                   # app on http://localhost:8080
 services:
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./:/srv
     # ensure the private session store is writable by the php-fpm (www-data) worker
-    command: sh -c "mkdir -p /srv/app/storage/sessions && chown -R www-data:www-data /srv/app/storage && exec php-fpm"
+    command: sh -c "mkdir -p /srv/storage/sessions && chown -R www-data:www-data /srv/storage && exec php-fpm"
     depends_on:
       db:
         condition: service_healthy

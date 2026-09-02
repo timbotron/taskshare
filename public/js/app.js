@@ -18,21 +18,6 @@
     })
   }
 
-  // --- Home demo (CODE-77 scaffold): proves the no-build frontend is wired ---
-  var demoRoot = document.getElementById('ts-demo')
-  if (demoRoot) {
-    var count = 0
-    var Demo = {
-      view: function () {
-        return m('div', { class: 'space-y-3' }, [
-          m('p', { class: 'text-sm text-gray-500' }, 'Mithril is wired. Clicks: ' + count),
-          m('button', { class: 'btn', onclick: function () { count++ } }, 'Click me'),
-        ])
-      },
-    }
-    m.mount(demoRoot, Demo)
-  }
-
   // --- Board view (CODE-81 hydrate + CODE-82 CRUD + 83 complete + 84 clear + 86 perms) ---
   var boardRoot = document.getElementById('board-app')
   if (!boardRoot || !window.__TASKSHARE__) return

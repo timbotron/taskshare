@@ -1,6 +1,6 @@
 <?php
 
-namespace Initium;
+namespace App\Controllers;
 
 // Task CRUD API. Board-scoped; every action authorizes via board_for_action().
 // Add + edit-text are owner-only; complete is gated by allow_complete. Clear

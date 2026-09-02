@@ -1,6 +1,6 @@
 <?php
 
-namespace Initium;
+namespace App\Controllers;
 
 // List CRUD API. Board-scoped; every action authorizes via board_for_action().
 // (Named TaskList because `List` is a reserved word in PHP.)

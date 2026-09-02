@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="list-card mx-auto max-w-md">
     <h1 class="mb-4 text-xl font-semibold">Log in</h1>
     <form action="/login" method="POST" class="space-y-3">

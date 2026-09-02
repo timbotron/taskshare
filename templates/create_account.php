@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="list-card mx-auto max-w-md">
     <h1 class="mb-2 text-xl font-semibold">Create your account</h1>
     <p class="mb-4 text-sm text-muted">Enter your email and we'll send a link to set your password.</p>

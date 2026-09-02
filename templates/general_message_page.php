@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="list-card mx-auto max-w-md">
     <h1 class="mb-3 text-xl font-semibold"><?= $this->e($top_title) ?></h1>
     <div class="text-sm text-fg"><?= $page_message ?></div>

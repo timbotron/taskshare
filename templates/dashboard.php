@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="mx-auto max-w-3xl">
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-2xl font-semibold">Your boards</h1>

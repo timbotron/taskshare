@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="list-card mx-auto max-w-md">
     <h1 class="mb-4 text-xl font-semibold">Set a new password</h1>
     <form action="/password-reset/<?= $this->e($uuid) ?>" method="POST" class="space-y-3">

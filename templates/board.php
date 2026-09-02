@@ -1,4 +1,4 @@
-<?php $this->layout('basic'); ?>
+<?php $this->layout('app::basic'); ?>
 <div class="mx-auto max-w-6xl">
     <div id="board-app"></div>
 </div>

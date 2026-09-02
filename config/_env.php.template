@@ -15,6 +15,7 @@ define('EMAIL_MAILGUN_DOMAIN','');
 define('EMAIL_SUPPORT_ADDRESS','support@taskshare.org');
 define('ALLOW_SIGNUPS',1);
 define('LOGIN_TIMEOUT',336); // hours, 336 = 2 weeks
+define('LOGIN_REDIRECT','dashboard'); // where core sends users after login (path appended to SITE_URL)
 
 // Optional (core defaults apply if unset):
 // define('ADMIN_EMAIL','you@example.com'); // this logged-in email is an admin (in addition to users.is_admin=1)

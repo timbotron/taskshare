@@ -40,7 +40,7 @@
   var canComplete = isOwner || p.allow_complete
   var canClearCompleted = isOwner || p.allow_clear_completed
 
-  var boardUi = { showChrome: false, showSettings: false }
+  var boardUi = { showChrome: false, showSettings: false, error: null }
 
   state.lists.forEach(initListUi)
   function initListUi (list) {
@@ -48,10 +48,18 @@
     list.tasks.forEach(function (t) { t._editValue = t.text })
   }
 
-  // XHR helper. Mithril redraws automatically when the promise settles.
+  // XHR helper. Mithril redraws automatically when the promise settles. On error
+  // it raises a quiet inline banner (boardUi.error) and rethrows so the caller can
+  // revert its optimistic change (CODE-134); the API stays authoritative.
+  var errorTimer = null
+  function showError (err) {
+    boardUi.error = (err && err.response && err.response.error) || 'Something went wrong.'
+    clearTimeout(errorTimer)
+    errorTimer = setTimeout(function () { boardUi.error = null; m.redraw() }, 4000)
+  }
   function api (method, url, body) {
     return m.request({ method: method, url: url, body: body }).catch(function (err) {
-      window.alert((err && err.response && err.response.error) || 'Something went wrong.')
+      showError(err)
       throw err
     })
   }
@@ -74,9 +82,11 @@
   }
   function deleteList (list) {
     if (!window.confirm('Delete this list and all its tasks?')) return
-    api('DELETE', base + '/lists/' + list.id).then(function () {
-      var i = state.lists.indexOf(list)
-      if (i >= 0) state.lists.splice(i, 1)
+    var i = state.lists.indexOf(list)
+    if (i < 0) return
+    state.lists.splice(i, 1) // optimistic
+    api('DELETE', base + '/lists/' + list.id).catch(function () {
+      state.lists.splice(i, 0, list) // restore at its original spot
     })
   }
   function toggleEditTasks (list) {
@@ -85,12 +95,15 @@
   }
   function clearCompleted (list) {
     // No confirm — it's a frequent action and only removes already-completed tasks.
-    api('DELETE', base + '/lists/' + list.id + '/completed').then(function () {
-      list.tasks = list.tasks.filter(function (t) { return !t.completed })
+    if (!hasCompleted(list)) return
+    var prev = list.tasks
+    list.tasks = prev.filter(function (t) { return !t.completed }) // optimistic
+    api('DELETE', base + '/lists/' + list.id + '/completed').catch(function () {
+      list.tasks = prev // restore the pre-clear set on failure
     })
   }
   function savePermissions () {
-    api('PUT', base + '/permissions', {
+    return api('PUT', base + '/permissions', {
       allow_complete: state.permissions.allow_complete,
       allow_clear_completed: state.permissions.allow_clear_completed,
       allow_create_lists: state.permissions.allow_create_lists,
@@ -99,25 +112,42 @@
   }
 
   // --- task actions ---
+  // Temp ids for optimistic inserts are negative so they never collide with real
+  // (positive) server ids; reconciled to the real id when the POST returns.
+  var tempIdSeq = -1
   function addTask (list) {
     var text = (list._ui.addValue || '').trim()
     if (!text) return
-    api('POST', base + '/lists/' + list.id + '/tasks', { text: text }).then(function (task) {
-      task._editValue = task.text
-      list.tasks.push(task)
-      list._ui.addValue = '' // keep the input open for the next one
+    var task = { id: tempIdSeq--, text: text, completed: 0, position: list.tasks.length, _editValue: text, _pending: true }
+    list.tasks.push(task) // optimistic — shows immediately
+    list._ui.addValue = '' // keep the input open for the next one
+    api('POST', base + '/lists/' + list.id + '/tasks', { text: text }).then(function (saved) {
+      task.id = saved.id
+      task.position = saved.position
+      task._pending = false // now safe for complete/edit/reorder
+    }).catch(function () {
+      var i = list.tasks.indexOf(task)
+      if (i >= 0) list.tasks.splice(i, 1) // revert the insert
     })
   }
   function saveTaskText (task) {
     var text = (task._editValue || '').trim()
-    if (!text) return
-    api('PUT', base + '/tasks/' + task.id, { text: text }).then(function () { task.text = text })
+    if (!text || task._pending || text === task.text) return // nothing to save
+    var prev = task.text
+    task.text = text // optimistic
+    api('PUT', base + '/tasks/' + task.id, { text: text }).catch(function () {
+      task.text = prev
+      task._editValue = prev // revert
+    })
   }
   // Set (not blindly toggle) the completed flag; click a struck task to un-strike.
   function toggleComplete (task) {
-    var next = task.completed ? 0 : 1
-    api('PUT', base + '/tasks/' + task.id + '/complete', { completed: next }).then(function () {
-      task.completed = next
+    if (task._pending) return // wait for its real id before mutating it
+    var prev = task.completed
+    var next = prev ? 0 : 1
+    task.completed = next // optimistic
+    api('PUT', base + '/tasks/' + task.id + '/complete', { completed: next }).catch(function () {
+      task.completed = prev // revert
     })
   }
 
@@ -134,11 +164,13 @@
     if (to < 0) { tasks.splice(from, 0, moved); return } // target gone: undo
     tasks.splice(after ? to + 1 : to, 0, moved)
   }
-  function persistTaskOrder (list) {
+  function persistTaskOrder (list, prev) {
     api('PUT', base + '/lists/' + list.id + '/tasks/reorder', {
       order: list.tasks.map(function (t) { return t.id }),
     }).then(function () {
       list.tasks.forEach(function (t, i) { t.position = i })
+    }).catch(function () {
+      list.tasks = prev // restore the pre-drag order
     })
   }
 
@@ -208,7 +240,7 @@
         : m('span', { class: 'task-text flex-1' + (checked ? ' is-done' : '') }, task.text)
 
       var children = [check, body]
-      var rowAttrs = { class: 'task-row' + (dragTaskId === task.id ? ' opacity-50' : '') }
+      var rowAttrs = { class: 'task-row' + ((dragTaskId === task.id || task._pending) ? ' opacity-50' : '') }
 
       // Edit mode adds a drag handle; the row is a drop target. Only the handle
       // is draggable so the text input stays freely editable (CODE-105).
@@ -228,8 +260,9 @@
         rowAttrs.ondrop = function (e) {
           e.preventDefault()
           var rect = e.currentTarget.getBoundingClientRect()
+          var prev = list.tasks.slice() // snapshot for rollback on a failed save
           moveTask(list, dragTaskId, task.id, (e.clientY - rect.top) > rect.height / 2)
-          persistTaskOrder(list)
+          persistTaskOrder(list, prev)
           dragTaskId = null
         }
       }
@@ -337,7 +370,12 @@
               class: 'perm-checkbox',
               type: 'checkbox',
               checked: state.permissions[row[0]],
-              onchange: function (e) { state.permissions[row[0]] = e.target.checked; savePermissions() },
+              onchange: function (e) {
+                var key = row[0]
+                var prev = state.permissions[key]
+                state.permissions[key] = e.target.checked // optimistic
+                savePermissions().catch(function () { state.permissions[key] = prev }) // revert the toggle
+              },
             }),
             row[1],
           ])
@@ -350,6 +388,9 @@
     view: function () {
       var hasChrome = canCreateList || isOwner
       return m('div', [
+        boardUi.error
+          ? m('div', { class: 'mb-4 border border-red-500 px-3 py-2 text-sm text-red-600', role: 'alert' }, boardUi.error)
+          : null,
         // Header: board title on the left; owner badge + options gear on the right.
         m('div', { class: 'mb-6 flex items-center justify-between gap-2' }, [
           m('h1', { class: 'text-2xl font-semibold' }, state.board.title),

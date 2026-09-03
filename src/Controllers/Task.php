@@ -60,14 +60,19 @@ class Task extends Base {
         // Position only the tasks that actually belong to this list; the client
         // sends the full ordered set, so foreign/unknown ids are ignored.
         $valid = array_flip(array_map('intval', $this->db->select('tasks', 'id', ['list_id' => $vars['id']])));
-        $position = 0;
-        foreach($order as $task_id) {
-            $task_id = (int) $task_id;
-            if(isset($valid[$task_id])) {
-                $this->db->update('tasks', ['position' => $position], ['id' => $task_id]);
-                $position++;
+
+        // All position writes in one transaction so a mid-loop failure can't leave
+        // the list half-reordered (CODE-158).
+        $this->db->action(function ($db) use ($order, $valid) {
+            $position = 0;
+            foreach($order as $task_id) {
+                $task_id = (int) $task_id;
+                if(isset($valid[$task_id])) {
+                    $db->update('tasks', ['position' => $position], ['id' => $task_id]);
+                    $position++;
+                }
             }
-        }
+        });
         $this->json(['ok' => true]);
     }
 

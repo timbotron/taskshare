@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 // Task CRUD API. Board-scoped; every action authorizes via board_for_action().
-// Add + edit-text are owner-only; complete is gated by allow_complete. Clear
-// Completed (the only delete path) lives on TaskList (CODE-84).
+// Add is gated by allow_add_tasks (CODE-90); edit-text is owner-only; complete is
+// gated by allow_complete. Clear Completed (the only delete path) lives on
+// TaskList (CODE-84).
 class Task extends Base {
 
-    // POST /b/{slug}/lists/{id}/tasks — owner only (adding tasks isn't shareable)
+    // POST /b/{slug}/lists/{id}/tasks — owner or allow_add_tasks (CODE-90)
     public function create($vars) {
-        $board = $this->board_for_action($vars['slug']);
+        $board = $this->board_for_action($vars['slug'], 'allow_add_tasks');
         if(!$this->db->has('lists', ['id' => $vars['id'], 'board_id' => $board['id']])) {
             $this->json_error('List not found.', 404);
         }

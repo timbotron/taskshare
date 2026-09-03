@@ -30,9 +30,9 @@
   // Per-action capabilities. The owner may do anything; an anonymous link-holder
   // may do only what the board permits. These MIRROR the server (board_for_action);
   // the API is authoritative — hiding a control is convenience, not security.
-  // Adding/editing tasks and renaming lists are owner-only (not shareable perms).
+  // Editing task text and renaming lists stay owner-only; adding tasks is shareable (CODE-90).
   var p = state.permissions
-  var canAddTask = isOwner
+  var canAddTask = isOwner || p.allow_add_tasks
   var canEditTask = isOwner
   var canRenameList = isOwner
   var canCreateList = isOwner || p.allow_create_lists
@@ -104,6 +104,7 @@
   }
   function savePermissions () {
     return api('PUT', base + '/permissions', {
+      allow_add_tasks: state.permissions.allow_add_tasks,
       allow_complete: state.permissions.allow_complete,
       allow_clear_completed: state.permissions.allow_clear_completed,
       allow_create_lists: state.permissions.allow_create_lists,
@@ -354,6 +355,7 @@
   }
 
   var PERMISSION_LABELS = [
+    ['allow_add_tasks', 'Let them add tasks'],
     ['allow_complete', 'Let anyone with the link complete items'],
     ['allow_clear_completed', 'Let them clear completed tasks'],
     ['allow_create_lists', 'Let them create lists'],

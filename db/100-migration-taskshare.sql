@@ -55,6 +55,7 @@ CREATE TABLE `tasks` (
 -- --------------------------------------------------------
 CREATE TABLE `board_permissions` (
   `board_id` int UNSIGNED NOT NULL,
+  `allow_add_tasks` tinyint UNSIGNED NOT NULL DEFAULT 0,
   `allow_complete` tinyint UNSIGNED NOT NULL DEFAULT 0,
   `allow_clear_completed` tinyint UNSIGNED NOT NULL DEFAULT 0,
   `allow_create_lists` tinyint UNSIGNED NOT NULL DEFAULT 0,

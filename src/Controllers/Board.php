@@ -123,7 +123,7 @@ class Board extends Base {
         }
 
         $perms = $this->db->get('board_permissions',
-            ['allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'],
+            ['allow_add_tasks', 'allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'],
             ['board_id' => $board['id']]);
 
         $viewer = Cred::userDetails();
@@ -133,6 +133,7 @@ class Board extends Base {
             'board' => ['id' => (int) $board['id'], 'title' => $board['title'], 'slug' => $board['slug']],
             'is_owner' => $is_owner,
             'permissions' => [
+                'allow_add_tasks' => (bool) ($perms['allow_add_tasks'] ?? false),
                 'allow_complete' => (bool) ($perms['allow_complete'] ?? false),
                 'allow_clear_completed' => (bool) ($perms['allow_clear_completed'] ?? false),
                 'allow_create_lists' => (bool) ($perms['allow_create_lists'] ?? false),
@@ -158,7 +159,7 @@ class Board extends Base {
         $input = $this->json_input();
 
         $update = [];
-        foreach(['allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'] as $flag) {
+        foreach(['allow_add_tasks', 'allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'] as $flag) {
             $update[$flag] = empty($input[$flag]) ? 0 : 1;
         }
         $this->db->update('board_permissions', $update, ['board_id' => $board['id']]);

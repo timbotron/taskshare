@@ -277,7 +277,9 @@
     view: function (vnode) {
       var list = vnode.attrs.list
       var items = []
-      if (canAddTask) items.push(iconBtn(ICON.plus, 'Add task', function () { list._ui.adding = true }))
+      // Sync redraw so the new input's oncreate focus runs inside the tap gesture;
+      // mobile browsers ignore a focus() that fires after an async redraw (CODE-144).
+      if (canAddTask) items.push(iconBtn(ICON.plus, 'Add task', function () { list._ui.adding = true; m.redraw.sync() }))
       if (canEditTask) items.push(iconBtn(ICON.editTasks, list._ui.editing ? 'Done editing' : 'Edit tasks', function () { toggleEditTasks(list) }, list._ui.editing ? 'is-active' : ''))
       if (canClearCompleted && hasCompleted(list)) items.push(iconBtn(ICON.clear, 'Clear completed', function () { clearCompleted(list) }))
       if (canDeleteList) items.push(iconBtn(ICON.trash, 'Delete list', function () { deleteList(list) }, 'icon-danger'))

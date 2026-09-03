@@ -2,7 +2,7 @@
 <html lang="en"<?php if($is_logged_in): ?> data-theme="<?= $this->e($user_theme ?? 'light') ?>" data-auth="1"<?php elseif(isset($owner_theme)): ?> data-owner-theme="<?= $this->e($owner_theme) ?>"<?php endif; ?>>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <title><?=$this->e($page_title ?? SITE_NAME)?></title>
     <link rel="stylesheet" href="/css/app.css">
     <script>

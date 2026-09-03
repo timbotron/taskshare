@@ -67,6 +67,11 @@ class Base extends \Initium\Base {
 
     // Next `position` value for an ordered set. Medoo's max() returns '' (not
     // null) for an empty aggregate, so treat both as "no rows yet" -> 0.
+    //
+    // MAX+1 is deliberately not atomic (CODE-159): two concurrent adds on a shared
+    // board can land on the same position, but every ordered read tiebreaks with
+    // `ORDER BY position, id`, so ordering stays deterministic — accepted over the
+    // cost of DB-side sequencing for a low-write todo app.
     protected function next_position(string $table, array $where): int {
         $max = $this->db->max($table, 'position', $where);
         return ($max === null || $max === '') ? 0 : (int) $max + 1;

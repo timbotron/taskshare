@@ -92,6 +92,9 @@ class Board extends Base {
             $this->return_code(404);
         }
 
+        // The whole board (every list + task) is loaded and embedded inline for
+        // hydration — there's no per-board list/task cap (CODE-160). Fine at todo
+        // scale; revisit with a cap or pagination if boards ever grow large.
         $lists = $this->db->select('lists', ['id', 'title', 'position'], [
             'board_id' => $board['id'],
             'ORDER' => ['position' => 'ASC', 'id' => 'ASC'],

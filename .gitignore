@@ -11,3 +11,6 @@ Thumbs.db
 .composer
 *.sublime-workspace
 *.sublime-project
+
+# Local AI assistant guidance (not tracked)
+/CLAUDE.md

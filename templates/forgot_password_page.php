@@ -3,6 +3,7 @@
     <h1 class="mb-2 text-xl font-semibold">Forgot password?</h1>
     <p class="mb-4 text-sm text-muted">Enter your email. If it matches an account, we'll send a reset link.</p>
     <form action="/password-forgot" method="POST" class="space-y-3">
+        <?= $this->csrf_field() ?>
         <div>
             <label for="email" class="mb-1 block text-sm font-medium">Email</label>
             <input class="field" type="email" id="email" name="email" value="<?= $this->e($post_content['email'] ?? '') ?>" required>

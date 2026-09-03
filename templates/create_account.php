@@ -3,6 +3,7 @@
     <h1 class="mb-2 text-xl font-semibold">Create your account</h1>
     <p class="mb-4 text-sm text-muted">Enter your email and we'll send a link to set your password.</p>
     <form action="/create-account" method="POST" class="space-y-3">
+        <?= $this->csrf_field() ?>
         <div>
             <label for="email" class="mb-1 block text-sm font-medium">Email</label>
             <input class="field" type="email" id="email" name="email" value="<?= $this->e($post_content['email'] ?? '') ?>" required>

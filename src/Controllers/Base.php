@@ -15,12 +15,16 @@ use Initium\View;
  */
 class Base extends \Initium\Base {
 
-    protected $templates;
+    protected $templates; // lazily built by view()
 
-    public function __construct() {
-        parent::__construct(); // $this->db + flash queue
-
-        // Shared Plates engine (app:: resolves app-first, core-fallback) + layout state.
+    // Lazily build the shared Plates engine (app:: resolves app-first, core-fallback)
+    // with the layout data. Only the HTML handlers call this; the JSON API handlers
+    // never do, so they skip the engine build and the users.theme lookup entirely —
+    // core's own Base constructor stays as lean as it renders (CODE-152).
+    protected function view() {
+        if($this->templates !== null) {
+            return $this->templates;
+        }
         $this->templates = View::engine();
         $viewer = Cred::userDetails();
         $this->templates->addData([
@@ -29,6 +33,7 @@ class Base extends \Initium\Base {
             // Core's Cred session omits theme (CODE-88), so fetch it for the layout.
             'user_theme' => $viewer ? $this->db->get('users', 'theme', ['id' => $viewer['user_id']]) : null,
         ], ['app::basic']);
+        return $this->templates;
     }
 
     protected function require_login() {

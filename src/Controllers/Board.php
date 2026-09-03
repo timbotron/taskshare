@@ -18,14 +18,14 @@ class Board extends Base {
             'ORDER' => ['created_at' => 'ASC'],
         ]);
 
-        $this->templates->addData(['page_title' => SITE_NAME . ' — Your Boards'], ['app::basic']);
-        $this->templates->addData(['messages' => $this->get_messages()], ['app::basic']);
-        $this->templates->addData([
+        $this->view()->addData(['page_title' => SITE_NAME . ' — Your Boards'], ['app::basic']);
+        $this->view()->addData(['messages' => $this->get_messages()], ['app::basic']);
+        $this->view()->addData([
             'boards' => $boards,
             'at_cap' => count($boards) >= self::MAX_BOARDS,
             'max_boards' => self::MAX_BOARDS,
         ], ['app::dashboard']);
-        echo $this->templates->render('app::dashboard');
+        echo $this->view()->render('app::dashboard');
     }
 
     // POST /boards — create a board (hard cap enforced server-side)
@@ -148,9 +148,9 @@ class Board extends Base {
         // The board's default theme (for viewers with no saved choice) is the owner's.
         $owner_theme = $this->db->get('users', 'theme', ['id' => $board['owner_id']]) ?: 'light';
 
-        $this->templates->addData(['page_title' => $board['title'] . ' — ' . SITE_NAME, 'owner_theme' => $owner_theme], ['app::basic']);
-        $this->templates->addData(['state_json' => $state_json], ['app::board']);
-        echo $this->templates->render('app::board');
+        $this->view()->addData(['page_title' => $board['title'] . ' — ' . SITE_NAME, 'owner_theme' => $owner_theme], ['app::basic']);
+        $this->view()->addData(['state_json' => $state_json], ['app::board']);
+        echo $this->view()->render('app::board');
     }
 
     // PUT /b/{slug}/permissions — owner-only: set the board's sharing flags.

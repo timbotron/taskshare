@@ -10,16 +10,16 @@ use Initium\Auth\Cred;
 class Home extends Base {
 
     public function home_page() {
-        $this->templates->addData(['page_title' => SITE_NAME], ['app::basic']);
-        echo $this->templates->render('app::home');
+        $this->view()->addData(['page_title' => SITE_NAME], ['app::basic']);
+        echo $this->view()->render('app::home');
     }
 
     public function logged_in_page() {
         $this->require_login();
         $user = Cred::userDetails();
 
-        $this->templates->addData(['page_title' => SITE_NAME], ['app::basic']);
-        $this->templates->addData(['user' => $user], ['app::logged_in_page']);
-        echo $this->templates->render('app::logged_in_page');
+        $this->view()->addData(['page_title' => SITE_NAME], ['app::basic']);
+        $this->view()->addData(['user' => $user], ['app::logged_in_page']);
+        echo $this->view()->render('app::logged_in_page');
     }
 }

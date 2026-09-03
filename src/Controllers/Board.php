@@ -8,6 +8,11 @@ class Board extends Base {
 
     const MAX_BOARDS = 5;
 
+    // The shareable board_permissions flags — the single source of truth for the
+    // columns read, the hydration payload, and the save loop (CODE-155). The board
+    // app mirrors these as PERMISSION_LABELS (which also carries the UI copy).
+    const PERMISSION_FLAGS = ['allow_add_tasks', 'allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'];
+
     // GET /dashboard — the logged-in owner's boards
     public function dashboard() {
         $this->require_login();
@@ -122,23 +127,20 @@ class Board extends Base {
             ];
         }
 
-        $perms = $this->db->get('board_permissions',
-            ['allow_add_tasks', 'allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'],
-            ['board_id' => $board['id']]);
+        $perms = $this->db->get('board_permissions', self::PERMISSION_FLAGS, ['board_id' => $board['id']]);
 
         $viewer = Cred::userDetails();
         $is_owner = $viewer && $viewer['user_id'] == $board['owner_id'];
 
+        $permissions = [];
+        foreach(self::PERMISSION_FLAGS as $flag) {
+            $permissions[$flag] = (bool) ($perms[$flag] ?? false);
+        }
+
         $state = [
             'board' => ['id' => (int) $board['id'], 'title' => $board['title'], 'slug' => $board['slug']],
             'is_owner' => $is_owner,
-            'permissions' => [
-                'allow_add_tasks' => (bool) ($perms['allow_add_tasks'] ?? false),
-                'allow_complete' => (bool) ($perms['allow_complete'] ?? false),
-                'allow_clear_completed' => (bool) ($perms['allow_clear_completed'] ?? false),
-                'allow_create_lists' => (bool) ($perms['allow_create_lists'] ?? false),
-                'allow_delete_lists' => (bool) ($perms['allow_delete_lists'] ?? false),
-            ],
+            'permissions' => $permissions,
             'lists' => $lists_out,
         ];
 
@@ -159,7 +161,7 @@ class Board extends Base {
         $input = $this->json_input();
 
         $update = [];
-        foreach(['allow_add_tasks', 'allow_complete', 'allow_clear_completed', 'allow_create_lists', 'allow_delete_lists'] as $flag) {
+        foreach(self::PERMISSION_FLAGS as $flag) {
             $update[$flag] = empty($input[$flag]) ? 0 : 1;
         }
         $this->db->update('board_permissions', $update, ['board_id' => $board['id']]);

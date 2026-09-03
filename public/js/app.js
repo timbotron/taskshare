@@ -102,14 +102,9 @@
       list.tasks = prev // restore the pre-clear set on failure
     })
   }
+  // Send the whole permissions object; the server reads only its known flags.
   function savePermissions () {
-    return api('PUT', base + '/permissions', {
-      allow_add_tasks: state.permissions.allow_add_tasks,
-      allow_complete: state.permissions.allow_complete,
-      allow_clear_completed: state.permissions.allow_clear_completed,
-      allow_create_lists: state.permissions.allow_create_lists,
-      allow_delete_lists: state.permissions.allow_delete_lists,
-    })
+    return api('PUT', base + '/permissions', state.permissions)
   }
 
   // --- task actions ---

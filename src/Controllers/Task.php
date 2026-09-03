@@ -77,8 +77,11 @@ class Task extends Base {
     }
 
     protected function require_task_in_board($task_id, $board_id) {
-        $task = $this->db->get('tasks', ['id', 'list_id'], ['id' => $task_id]);
-        if(!$task || !$this->db->has('lists', ['id' => $task['list_id'], 'board_id' => $board_id])) {
+        // One joined existence check: the task's list must belong to the board (CODE-153).
+        $ok = $this->db->has('tasks',
+            ['[><]lists' => ['list_id' => 'id']],
+            ['tasks.id' => $task_id, 'lists.board_id' => $board_id]);
+        if(!$ok) {
             $this->json_error('Task not found.', 404);
         }
     }

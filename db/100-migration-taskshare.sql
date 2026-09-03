@@ -30,7 +30,7 @@ CREATE TABLE `lists` (
   `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'New List',
   `position` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `lists_board_id_idx` (`board_id`),
+  KEY `lists_board_position_idx` (`board_id`, `position`),
   CONSTRAINT `fk_lists_board` FOREIGN KEY (`board_id`) REFERENCES `boards` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -46,7 +46,7 @@ CREATE TABLE `tasks` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `tasks_list_id_idx` (`list_id`),
+  KEY `tasks_list_position_idx` (`list_id`, `position`),
   CONSTRAINT `fk_tasks_list` FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

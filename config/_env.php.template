@@ -21,3 +21,29 @@ define('LOGIN_REDIRECT','dashboard'); // where core sends users after login (pat
 // define('ADMIN_EMAIL','you@example.com'); // this logged-in email is an admin (in addition to users.is_admin=1)
 // define('LOGIN_THROTTLE_MAX',10);         // failed logins allowed per IP in the window
 // define('LOGIN_THROTTLE_WINDOW',15);      // window length in minutes
+
+// Optional. Set to true ONLY when the app runs behind a trusted reverse proxy
+// (the shipped Caddy stack, and the prod Caddy box) that sets X-Forwarded-For /
+// X-Forwarded-Proto. It makes the login throttle key on the real client IP
+// instead of the proxy's, and lets the session cookie be marked Secure behind
+// TLS-terminating proxies. Assumes exactly one trusted proxy directly in front.
+// Leave off for direct (non-proxied) deployments — the forwarded headers are
+// client-spoofable there.
+// define('TRUST_FORWARDED', true);
+
+// Optional. Force the session cookie's Secure flag on unconditionally. Use for
+// installs always served over HTTPS where neither $_SERVER['HTTPS'] nor a
+// trusted X-Forwarded-Proto is reliably set. Leave off for local HTTP dev.
+// define('FORCE_SECURE_COOKIES', true);
+
+// Optional. How long a set/reset-password link stays valid, in hours (default
+// 24). Requires the 004-password-reset-expiry migration.
+// define('PASSWORD_RESET_TTL', 24);
+
+// Optional. Permit no-email signup (the admin "require valid email" toggle can
+// then be turned off, sending new users straight to the set-password page with
+// no Mailgun round-trip). This mode is ENUMERABLE BY DESIGN: it must show a new
+// user their set-password link on screen, which reveals whether an account
+// already existed. Enable ONLY on trusted/internal installs. Without this
+// constant the toggle is locked on and email verification is always required.
+// define('NO_EMAIL_SIGNUP', true);

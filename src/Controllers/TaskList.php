@@ -49,16 +49,4 @@ class TaskList extends Base {
             $this->json_error('List not found.', 404);
         }
     }
-
-    // Validate a required string field from the JSON body, or send a 422.
-    protected function valid_text(string $field, int $max): string {
-        $input = $this->json_input();
-        $v = new \Valitron\Validator($input);
-        $v->rule('required', $field);
-        $v->rule('lengthMax', $field, $max);
-        if(!$v->validate()) {
-            $this->json_error('Invalid ' . $field . '.', 422);
-        }
-        return $input[$field];
-    }
 }

@@ -15,7 +15,7 @@ class Task extends Base {
             $this->json_error('List not found.', 404);
         }
 
-        $text = $this->valid_text();
+        $text = $this->valid_text('text', 500);
 
         $position = $this->next_position('tasks', ['list_id' => $vars['id']]);
         $this->db->insert('tasks', ['list_id' => $vars['id'], 'text' => $text, 'completed' => 0, 'position' => $position]);
@@ -27,7 +27,7 @@ class Task extends Base {
         $board = $this->board_for_action($vars['slug']);
         $this->require_task_in_board($vars['id'], $board['id']);
 
-        $text = $this->valid_text();
+        $text = $this->valid_text('text', 500);
         $this->db->update('tasks', ['text' => $text], ['id' => $vars['id']]);
         $this->json(['id' => (int) $vars['id'], 'text' => $text]);
     }
@@ -81,17 +81,5 @@ class Task extends Base {
         if(!$task || !$this->db->has('lists', ['id' => $task['list_id'], 'board_id' => $board_id])) {
             $this->json_error('Task not found.', 404);
         }
-    }
-
-    // Validate the required `text` field from the JSON body, or send a 422.
-    protected function valid_text(): string {
-        $input = $this->json_input();
-        $v = new \Valitron\Validator($input);
-        $v->rule('required', 'text');
-        $v->rule('lengthMax', 'text', 500);
-        if(!$v->validate()) {
-            $this->json_error('Invalid task text.', 422);
-        }
-        return $input['text'];
     }
 }

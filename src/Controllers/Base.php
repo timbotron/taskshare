@@ -16,6 +16,18 @@ use Initium\View;
 class Base extends \Initium\Base {
 
     protected $templates; // lazily built by view()
+    protected $viewer;            // memoized userDetails() for this request
+    private $viewer_loaded = false;
+
+    // The logged-in user array (user_id, email, is_admin) or false, read once per
+    // request from core's Cred and cached — handlers hit it several times (CODE-157).
+    protected function viewer() {
+        if(!$this->viewer_loaded) {
+            $this->viewer = Cred::userDetails();
+            $this->viewer_loaded = true;
+        }
+        return $this->viewer;
+    }
 
     // Lazily build the shared Plates engine (app:: resolves app-first, core-fallback)
     // with the layout data. Only the HTML handlers call this; the JSON API handlers
@@ -26,7 +38,7 @@ class Base extends \Initium\Base {
             return $this->templates;
         }
         $this->templates = View::engine();
-        $viewer = Cred::userDetails();
+        $viewer = $this->viewer();
         $this->templates->addData([
             'is_logged_in' => $viewer ? true : false,
             'is_admin' => Cred::isAdmin(),
@@ -39,7 +51,7 @@ class Base extends \Initium\Base {
     protected function require_login() {
         // Gate for owner-only pages (dashboard, board settings). Bounces
         // anonymous visitors to the login page.
-        if(!Cred::userDetails()) {
+        if(!$this->viewer()) {
             header('Location: ' . SITE_URL . 'login');
             exit;
         }
@@ -65,6 +77,18 @@ class Base extends \Initium\Base {
         $this->json(['error' => $message], $code);
     }
 
+    // Validate a required string field from the JSON body, or send a 422 (CODE-157).
+    protected function valid_text(string $field, int $max): string {
+        $input = $this->json_input();
+        $v = new \Valitron\Validator($input);
+        $v->rule('required', $field);
+        $v->rule('lengthMax', $field, $max);
+        if(!$v->validate()) {
+            $this->json_error('Invalid ' . $field . '.', 422);
+        }
+        return $input[$field];
+    }
+
     // Next `position` value for an ordered set. Medoo's max() returns '' (not
     // null) for an empty aggregate, so treat both as "no rows yet" -> 0.
     //
@@ -87,7 +111,7 @@ class Base extends \Initium\Base {
             $this->json_error('Board not found.', 404);
         }
 
-        $viewer = Cred::userDetails();
+        $viewer = $this->viewer();
         if($viewer && $viewer['user_id'] == $board['owner_id']) {
             return $board;
         }

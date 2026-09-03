@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use Initium\Auth\Cred;
-
 class Board extends Base {
 
     const MAX_BOARDS = 5;
@@ -16,7 +14,7 @@ class Board extends Base {
     // GET /dashboard — the logged-in owner's boards
     public function dashboard() {
         $this->require_login();
-        $owner_id = Cred::userDetails()['user_id'];
+        $owner_id = $this->viewer()['user_id'];
 
         $boards = $this->db->select('boards', ['id', 'title', 'slug'], [
             'owner_id' => $owner_id,
@@ -36,7 +34,7 @@ class Board extends Base {
     // POST /boards — create a board (hard cap enforced server-side)
     public function create() {
         $this->require_login();
-        $owner_id = Cred::userDetails()['user_id'];
+        $owner_id = $this->viewer()['user_id'];
 
         if($this->db->count('boards', ['owner_id' => $owner_id]) >= self::MAX_BOARDS) {
             $this->add_message('error', 'You have reached the maximum of ' . self::MAX_BOARDS . ' boards. Delete one to create another.');
@@ -129,7 +127,7 @@ class Board extends Base {
 
         $perms = $this->db->get('board_permissions', self::PERMISSION_FLAGS, ['board_id' => $board['id']]);
 
-        $viewer = Cred::userDetails();
+        $viewer = $this->viewer();
         $is_owner = $viewer && $viewer['user_id'] == $board['owner_id'];
 
         $permissions = [];
@@ -172,7 +170,7 @@ class Board extends Base {
     // (never reveal or mutate someone else's board).
     protected function owned_board_or_404($id): array {
         $board = $this->db->get('boards', ['id', 'owner_id'], ['id' => $id]);
-        if(!$board || $board['owner_id'] != Cred::userDetails()['user_id']) {
+        if(!$board || $board['owner_id'] != $this->viewer()['user_id']) {
             $this->return_code(404);
         }
         return $board;

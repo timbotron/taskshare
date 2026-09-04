@@ -50,10 +50,6 @@
         <?=$this->section('content')?>
     </main>
 
-    <footer class="mx-auto max-w-5xl px-4 py-8 text-center text-sm text-muted">
-        <a class="hover:text-accent" target="_blank" href="http://citracode.com">Powered by Citracode</a>
-    </footer>
-
     <script src="/js/mithril.min.js"></script>
     <script src="/js/app.js"></script>
 </body>

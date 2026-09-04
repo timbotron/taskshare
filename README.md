@@ -1,7 +1,7 @@
 # TaskShare
 
 Dead-simple shared task lists. This is the full rewrite of the original TaskShare
-(the legacy Fat-Free Framework + Bootstrap app is gone). Live: http://taskshare.org
+(the legacy Fat-Free Framework + Bootstrap app is gone). Live: https://www.taskshare.org
 
 ## Stack
 
@@ -21,7 +21,8 @@ docker compose up -d                                   # app on http://localhost
 ```
 
 On first boot the `db` container auto-imports core's migrations from
-`vendor/timbotron/initium-php-core/migrations` (`users`, `login_attempts`, `settings` + `is_admin`)
+`vendor/timbotron/initium-php-core/migrations` (`users`, `login_attempts`, `settings` + `is_admin`,
+`users.password_reset_expires`)
 then the app migration `db/100-migration-taskshare.sql` (boards / lists / tasks /
 board_permissions + a `theme` column on `users`), in filename order. To load demo data:
 
